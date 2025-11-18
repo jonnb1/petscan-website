@@ -3,100 +3,497 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PetScan AI – AI‑Powered Triage for Your Pets</title>
+  <title>PetScan AI</title>
   <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f8f9fa;
-      color: #333;
-      line-height: 1.6;
-    }
-    header {
-      background-color: #0077b6;
-      color: #fff;
-      padding: 40px 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-    header p {
-      margin: 8px 0 0 0;
-      font-size: 1rem;
-      opacity: 0.9;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .hero {
-      text-align: center;
-      padding: 40px 0;
-    }
-    .hero h2 {
-      font-size: 2rem;
-      margin-bottom: 16px;
-    }
-    .hero p {
-      font-size: 1.1rem;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    .ad {
-      margin: 40px 0;
-      text-align: center;
-      min-height: 90px; /* reserved space for ads */
-      border: 1px dashed #ccc;
-      padding: 16px;
-      background-color: #fff;
-    }
-    footer {
-      background-color: #f1f3f5;
-      text-align: center;
-      font-size: 0.85rem;
-      padding: 20px;
-      color: #555;
-    }
-    a {
-      color: #0077b6;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; background-color: #f2f2f2; }
+    header { background-color:#0a5c75; color:white; padding:1rem; text-align:center; }
+    nav { display:flex; justify-content:center; background-color:#07455e; }
+    nav button { flex:1; padding:0.75rem; border:none; background-color:#0a5c75; color:white; cursor:pointer; }
+    nav button.active { background-color:#093e50; }
+    .section { display:none; padding:1rem; }
+    .section.active { display:block; }
+    label { display:block; margin-top:0.75rem; }
+    input[type="text"], textarea, select { width:100%; padding:0.5rem; margin-top:0.25rem; box-sizing:border-box; }
+    textarea { min-height:80px; }
+    input[type="file"] { margin-top:0.25rem; }
+    button.primary { margin-top:1rem; padding:0.5rem 1rem; background-color:#0a5c75; color:white; border:none; cursor:pointer; border-radius:4px; }
+    .result-card { background-color:#fff; border:1px solid #ddd; border-radius:8px; padding:1rem; margin-top:1rem; }
+    .status-normal { color:green; font-weight:bold; }
+    .status-monitor { color:orange; font-weight:bold; }
+    .status-needs { color:red; font-weight:bold; }
+    .history-item { padding:0.5rem; border-bottom:1px solid #ddd; cursor:pointer; }
+    .concerns-list { display:flex; flex-wrap:wrap; gap:0.5rem; }
+    .concern { border:1px solid #ccc; border-radius:4px; padding:0.25rem 0.5rem; cursor:pointer; }
+    .concern.selected { background-color:#0a5c75; color:white; border-color:#07455e; }
+    .pet-list { list-style:none; padding:0; margin:0; }
+    .pet-item { display:flex; justify-content:space-between; align-items:center; padding:0.5rem; border-bottom:1px solid #ddd; }
+    .about-section h2 { margin-top:1rem; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>PetScan AI</h1>
-    <p>AI‑powered triage for your pets (not a diagnosis).</p>
-  </header>
-  <main class="container">
-    <section class="hero">
-      <h2>Welcome!</h2>
-      <p>Use our iPad app to analyze your pet’s coat, gait, breathing, hydration, and stool using artificial intelligence. Get quick guidance to help you decide when to call your veterinarian.</p>
-    </section>
-    <div class="ad">
-      <!-- Google AdSense placeholder.
-        After your AdSense account is approved, paste your AdSense script and ad unit here.
-        Example:
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR_ADSENSE_CLIENT_ID"
-          crossorigin="anonymous"></script>
-        <ins class="adsbygoogle"
-          style="display:block"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-          data-ad-client="YOUR_ADSENSE_CLIENT_ID"
-          data-ad-slot="YOUR_AD_SLOT_ID"></ins>
-        <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      -->
-      <p>Advertisement space reserved</p>
-    </div>
-  </main>
-  <footer>
-    &copy; 2025 PetScan AI. All rights reserved.
-  </footer>
+<header><h1>PetScan AI</h1></header>
+<nav>
+  <button id="tab-scan" class="active">Scan</button>
+  <button id="tab-history">History</button>
+  <button id="tab-pets">Pets</button>
+  <button id="tab-about">About</button>
+</nav>
+<!-- Scan Section -->
+<div id="scan-section" class="section active">
+  <h2>Run a Scan</h2>
+  <div>
+    <label for="pet-select">Pet:</label>
+    <select id="pet-select"></select>
+  </div>
+  <div>
+    <label for="scan-type">Scan Type:</label>
+    <select id="scan-type"></select>
+  </div>
+  <div>
+    <label>Common Concerns:</label>
+    <div id="concerns-container" class="concerns-list"></div>
+  </div>
+  <div>
+    <label for="notes">Notes:</label>
+    <textarea id="notes" placeholder="Describe what's going on"></textarea>
+  </div>
+  <div>
+    <label for="photo-input">Photo (required):</label>
+    <input type="file" id="photo-input" accept="image/*">
+  </div>
+  <button id="run-scan-button" class="primary">Run AI Scan</button>
+  <div id="scan-error" style="color:red; margin-top:0.5rem;"></div>
+  <div id="result-container"></div>
+</div>
+<!-- History Section -->
+<div id="history-section" class="section">
+  <h2>Scan History</h2>
+  <div id="history-list"></div>
+  <div id="history-detail" style="display:none;"></div>
+</div>
+<!-- Pets Section -->
+<div id="pets-section" class="section">
+  <h2>Your Pets</h2>
+  <ul id="pets-list" class="pet-list"></ul>
+  <h3>Add a Pet</h3>
+  <div>
+    <label for="new-pet-name">Name:</label>
+    <input type="text" id="new-pet-name" placeholder="Name">
+  </div>
+  <div>
+    <label for="new-pet-species">Species:</label>
+    <input type="text" id="new-pet-species" placeholder="e.g., Dog, Cat">
+  </div>
+  <div>
+    <label for="new-pet-breed">Breed:</label>
+    <input type="text" id="new-pet-breed" placeholder="Breed">
+  </div>
+  <button id="add-pet-button" class="primary">Add Pet</button>
+</div>
+<!-- About Section -->
+<div id="about-section" class="section">
+  <h2>About PetScan AI</h2>
+  <p>PetScan AI is an educational tool that helps pet parents think through what they're seeing at home. It uses AI to summarize your notes and photo into simple triage-style guidance.</p>
+  <h3>What PetScan AI is not</h3>
+  <ul>
+    <li>It is not a veterinarian.</li>
+    <li>It does not provide a diagnosis.</li>
+    <li>It does not replace an in-person physical exam.</li>
+  </ul>
+  <h3>Emergency Situations</h3>
+  <p>If your pet is having trouble breathing, is collapsed, bleeding heavily, appears to be in severe pain, or your gut tells you something is very wrong, contact a veterinarian or emergency clinic immediately. Do not wait for an AI opinion.</p>
+  <h3>How Your Data Is Used</h3>
+  <ul>
+    <li>Each scan is sent securely to the PetScan backend.</li>
+    <li>A temporary copy of your pet’s photo is stored on the server only to support the analysis.</li>
+    <li>We do not use your data for advertising or tracking across other apps.</li>
+  </ul>
+  <h3>Good Ways to Use PetScan</h3>
+  <ul>
+    <li>As a second opinion on how urgent something sounds.</li>
+    <li>To help you explain what you're seeing when you call a vet.</li>
+    <li>To keep a simple history of how your pet has been doing over time.</li>
+  </ul>
+  <p style="font-size:smaller;color:#555;">PetScan AI is provided “as-is” with no guarantees. Always follow the advice of a licensed veterinarian over anything you see in this app.</p>
+</div>
+<script>
+(function() {
+  const API_BASE = "https://petscan-backend.onrender.com";
+  const SCAN_TYPES = [
+    {id:'coat', title:'Coat / Skin'},
+    {id:'gait', title:'Gait'},
+    {id:'breathing', title:'Breathing'},
+    {id:'hydration', title:'Hydration'},
+    {id:'poop', title:'Stool / Poop'}
+  ];
+  const COMMON_CONCERNS = [
+    "Limping / trouble walking",
+    "Not eating / reduced appetite",
+    "Vomiting",
+    "Diarrhea",
+    "Lethargy / low energy",
+    "Coughing or sneezing",
+    "Breathing seems harder",
+    "Skin redness / itching",
+    "Eye discharge / redness"
+  ];
+  const PETS_KEY = "petscan.pets";
+  const HISTORY_KEY = "petscan.history";
+  const USER_KEY = "petscan.userId";
+
+  let userId = null;
+  let pets = [];
+  let history = [];
+  let selectedConcerns = new Set();
+  let selectedImageBase64 = "";
+  
+  // Elements
+  const navButtons = {
+    scan: document.getElementById("tab-scan"),
+    history: document.getElementById("tab-history"),
+    pets: document.getElementById("tab-pets"),
+    about: document.getElementById("tab-about")
+  };
+  const sections = {
+    scan: document.getElementById("scan-section"),
+    history: document.getElementById("history-section"),
+    pets: document.getElementById("pets-section"),
+    about: document.getElementById("about-section")
+  };
+  const petSelect = document.getElementById("pet-select");
+  const scanTypeSelect = document.getElementById("scan-type");
+  const concernsContainer = document.getElementById("concerns-container");
+  const notesInput = document.getElementById("notes");
+  const photoInput = document.getElementById("photo-input");
+  const runScanButton = document.getElementById("run-scan-button");
+  const scanErrorEl = document.getElementById("scan-error");
+  const resultContainer = document.getElementById("result-container");
+  const historyListEl = document.getElementById("history-list");
+  const historyDetailEl = document.getElementById("history-detail");
+  const petsListEl = document.getElementById("pets-list");
+  const newPetName = document.getElementById("new-pet-name");
+  const newPetSpecies = document.getElementById("new-pet-species");
+  const newPetBreed = document.getElementById("new-pet-breed");
+  const addPetButton = document.getElementById("add-pet-button");
+
+  function init() {
+    userId = loadUserId();
+    pets = loadPets();
+    history = loadHistory();
+    renderScanTypes();
+    renderPets();
+    renderConcerns();
+    updatePetSelect();
+    updateHistoryList();
+    setupNav();
+    setupEvents();
+  }
+
+  function loadUserId() {
+    let id = localStorage.getItem(USER_KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem(USER_KEY, id);
+    }
+    return id;
+  }
+  function loadPets() {
+    const data = localStorage.getItem(PETS_KEY);
+    if (data) {
+      try { return JSON.parse(data); } catch {}
+    }
+    const defaults = [
+      { id: crypto.randomUUID(), name:"Shadow", species:"Dog", breed:"Shepherd mix" },
+      { id: crypto.randomUUID(), name:"Shay", species:"Cat", breed:"Domestic shorthair" }
+    ];
+    savePets(defaults);
+    return defaults;
+  }
+  function savePets(list) {
+    localStorage.setItem(PETS_KEY, JSON.stringify(list));
+  }
+  function loadHistory() {
+    const data = localStorage.getItem(HISTORY_KEY);
+    if (data) {
+      try { return JSON.parse(data); } catch {}
+    }
+    return [];
+  }
+  function saveHistory(list) {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+  }
+
+  function setupNav() {
+    navButtons.scan.addEventListener('click', () => showSection('scan'));
+    navButtons.history.addEventListener('click', () => showSection('history'));
+    navButtons.pets.addEventListener('click', () => showSection('pets'));
+    navButtons.about.addEventListener('click', () => showSection('about'));
+  }
+  function showSection(name) {
+    for (const key in sections) {
+      sections[key].classList.remove('active');
+      navButtons[key].classList.remove('active');
+    }
+    sections[name].classList.add('active');
+    navButtons[name].classList.add('active');
+    if (name === 'history') {
+      updateHistoryList();
+    }
+    if (name === 'pets') {
+      renderPets();
+    }
+  }
+
+  function renderScanTypes() {
+    scanTypeSelect.innerHTML = '';
+    SCAN_TYPES.forEach(st => {
+      const opt = document.createElement('option');
+      opt.value = st.id;
+      opt.textContent = st.title;
+      scanTypeSelect.appendChild(opt);
+    });
+  }
+
+  function renderConcerns() {
+    concernsContainer.innerHTML = '';
+    COMMON_CONCERNS.forEach(c => {
+      const div = document.createElement('div');
+      div.textContent = c;
+      div.className = 'concern';
+      div.addEventListener('click', () => {
+        if (selectedConcerns.has(c)) {
+          selectedConcerns.delete(c);
+          div.classList.remove('selected');
+        } else {
+          selectedConcerns.add(c);
+          div.classList.add('selected');
+        }
+      });
+      concernsContainer.appendChild(div);
+    });
+  }
+
+  function updatePetSelect() {
+    petSelect.innerHTML = '';
+    pets.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.name + ' (' + p.species + ')';
+      petSelect.appendChild(opt);
+    });
+  }
+
+  function renderPets() {
+    petsListEl.innerHTML = '';
+    pets.forEach((p, index) => {
+      const li = document.createElement('li');
+      li.className = 'pet-item';
+      const span = document.createElement('span');
+      span.textContent = p.name + ' – ' + p.species + ' • ' + p.breed;
+      const delBtn = document.createElement('button');
+      delBtn.textContent = 'Remove';
+      delBtn.style.backgroundColor = '#e74c3c';
+      delBtn.style.color = 'white';
+      delBtn.style.border = 'none';
+      delBtn.style.padding = '0.25rem 0.5rem';
+      delBtn.style.borderRadius = '4px';
+      delBtn.addEventListener('click', () => {
+        pets.splice(index,1);
+        savePets(pets);
+        updatePetSelect();
+        renderPets();
+      });
+      li.appendChild(span);
+      li.appendChild(delBtn);
+      petsListEl.appendChild(li);
+    });
+  }
+
+  function setupEvents() {
+    addPetButton.addEventListener('click', () => {
+      const name = newPetName.value.trim();
+      const species = newPetSpecies.value.trim();
+      const breed = newPetBreed.value.trim();
+      if (!name) return;
+      const pet = { id: crypto.randomUUID(), name, species: species || 'Unknown', breed: breed || 'Unknown' };
+      pets.push(pet);
+      savePets(pets);
+      newPetName.value = '';
+      newPetSpecies.value = '';
+      newPetBreed.value = '';
+      updatePetSelect();
+      renderPets();
+    });
+
+    photoInput.addEventListener('change', () => {
+      const file = photoInput.files[0];
+      if (!file) {
+        selectedImageBase64 = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result;
+        selectedImageBase64 = dataUrl.split(',')[1] || '';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    runScanButton.addEventListener('click', runScan);
+  }
+
+  function runScan() {
+    scanErrorEl.textContent = '';
+    resultContainer.innerHTML = '';
+    if (!selectedImageBase64) {
+      scanErrorEl.textContent = 'Please select a photo of your pet before running the scan.';
+      return;
+    }
+    const petId = petSelect.value;
+    const pet = pets.find(p => p.id === petId);
+    if (!pet) {
+      scanErrorEl.textContent = 'Please select a pet.';
+      return;
+    }
+    const scanType = scanTypeSelect.value;
+    const notes = notesInput.value.trim();
+    const concernsNotes = Array.from(selectedConcerns).join(', ');
+    const combinedNotes = concernsNotes ? ('Common concerns: ' + concernsNotes + (notes ? '. Notes: ' + notes : '')) : notes;
+    runScanButton.disabled = true;
+    runScanButton.textContent = 'Analyzing...';
+    const payload = {
+      user_id: userId,
+      pet_id: pet.id,
+      species: pet.species,
+      notes: combinedNotes,
+      image_base64: selectedImageBase64,
+      scan_type: scanType
+    };
+    fetch(API_BASE + '/webapi/v1/analyze/' + scanType, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Server returned status ' + res.status);
+      }
+      return res.json();
+    })
+    .then(data => {
+      displayResult(data, pet);
+      const record = {
+        id: crypto.randomUUID(),
+        timestamp: Date.now(),
+        petId: pet.id,
+        petName: pet.name,
+        scanType: scanType,
+        status: data.overall_status || 'monitor',
+        summary: data.summary_text || '',
+        details: data
+      };
+      history.unshift(record);
+      saveHistory(history);
+      notesInput.value = '';
+      selectedConcerns.clear();
+      document.querySelectorAll('.concern.selected').forEach(el => el.classList.remove('selected'));
+      updateHistoryList();
+    })
+    .catch(err => {
+      scanErrorEl.textContent = 'Error: ' + err.message;
+    })
+    .finally(() => {
+      runScanButton.disabled = false;
+      runScanButton.textContent = 'Run AI Scan';
+    });
+  }
+
+  function displayResult(data, pet) {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    const status = data.overall_status || 'monitor';
+    let statusClass = '';
+    let statusText = '';
+    if (status === 'normal') {
+      statusClass = 'status-normal';
+      statusText = 'Looks OK';
+    } else if (status === 'monitor') {
+      statusClass = 'status-monitor';
+      statusText = 'Monitor';
+    } else {
+      statusClass = 'status-needs';
+      statusText = 'Needs Attention';
+    }
+    card.innerHTML = '<h3 class="' + statusClass + '">' + statusText + '</h3>' +
+      '<p><strong>Summary:</strong> ' + (data.summary_text || 'No summary provided.') + '</p>' +
+      '<p><strong>Recommendation:</strong> ' + (data.recommendation_text || 'No recommendation provided.') + '</p>';
+    if (Array.isArray(data.possible_conditions) && data.possible_conditions.length) {
+      const list = data.possible_conditions.map(c => '<li>' + c + '</li>').join('');
+      card.innerHTML += '<p><strong>Possible conditions (not a diagnosis):</strong></p><ul>' + list + '</ul>';
+    }
+    if (data.disclaimer) {
+      card.innerHTML += '<p style="font-size:smaller;color:#555;">' + data.disclaimer + '</p>';
+    }
+    resultContainer.innerHTML = '';
+    resultContainer.appendChild(card);
+  }
+
+  function updateHistoryList() {
+    historyListEl.innerHTML = '';
+    if (!history.length) {
+      historyListEl.textContent = 'No scans yet. Run a scan to see history here.';
+      return;
+    }
+    history.forEach(record => {
+      const div = document.createElement('div');
+      div.className = 'history-item';
+      div.textContent = record.timestamp ? new Date(record.timestamp).toLocaleString() + ' – ' + record.petName + ' – ' + record.scanType + ' – ' + record.status : '';
+      div.addEventListener('click', () => {
+        displayHistoryDetail(record);
+      });
+      historyListEl.appendChild(div);
+    });
+  }
+
+  function displayHistoryDetail(record) {
+    historyDetailEl.style.display = 'block';
+    historyDetailEl.innerHTML = '';
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.innerHTML = '<h3>' + record.petName + ' – ' + record.scanType + '</h3>' +
+      '<p><strong>Date:</strong> ' + new Date(record.timestamp).toLocaleString() + '</p>';
+    if (record.details) {
+      const data = record.details;
+      let status = data.overall_status || 'monitor';
+      let statusClass = '';
+      let statusText = '';
+      if (status === 'normal') { statusClass='status-normal'; statusText='Looks OK'; }
+      else if (status === 'monitor') { statusClass='status-monitor'; statusText='Monitor'; }
+      else { statusClass='status-needs'; statusText='Needs Attention'; }
+      card.innerHTML += '<h4 class="' + statusClass + '">' + statusText + '</h4>';
+      card.innerHTML += '<p><strong>Summary:</strong> ' + (data.summary_text || '') + '</p>';
+      card.innerHTML += '<p><strong>Recommendation:</strong> ' + (data.recommendation_text || '') + '</p>';
+      if (Array.isArray(data.possible_conditions) && data.possible_conditions.length) {
+        card.innerHTML += '<p><strong>Possible conditions:</strong></p><ul>' + data.possible_conditions.map(c => '<li>' + c + '</li>').join('') + '</ul>';
+      }
+      if (data.disclaimer) {
+        card.innerHTML += '<p style="font-size:smaller;color:#555;">' + data.disclaimer + '</p>';
+      }
+    } else {
+      card.innerHTML += '<p>No details saved for this scan.</p>';
+    }
+    historyDetailEl.appendChild(card);
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'Close';
+    closeBtn.className = 'primary';
+    closeBtn.addEventListener('click', () => {
+      historyDetailEl.style.display = 'none';
+    });
+    historyDetailEl.appendChild(closeBtn);
+  }
+
+  init();
+})();
+</script>
 </body>
 </html>
