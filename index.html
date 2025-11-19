@@ -52,6 +52,7 @@
     <input type="file" id="photo" accept="image/*" required>
     <button type="submit">Run AI Scan</button>
   </form>
+<p id="status" style="margin-top:1rem;"></p>
   <div id="result" class="result"></div>
   <h2>About PetScan AI</h2>
   <p>PetScan AI is an educational tool that helps pet parents think through what they're seeing at home. It uses AI to summarize your notes and photo into simple triage-style guidance.</p>
@@ -96,6 +97,12 @@
     }
     const petId = crypto.randomUUID();
     const payload = {
+        const statusEl = document.getElementById('status');
+  const resultDiv = document.getElementById('result');
+  statusEl.style.color = '';
+  statusEl.textContent = 'Uploading and analyzing...';
+  resultDiv.style.display = 'none';
+
       user_id: userId,
       pet_id: petId,
       species: '',
@@ -113,11 +120,15 @@
       });
       if (!resp.ok) throw new Error('Server error: ' + resp.status);
       const data = await resp.json();
+      
       showResult(data);
     } catch (err) {
       const resultDiv = document.getElementById('result');
-      resultDiv.style.display = 'block';
-      resultDiv.innerHTML = '<p style="color:red;">Error: ' + err.message + '</p>';
+          const statusEl = document.getElementById('status');
+    resultDiv.style.display = 'none';
+    statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
+
+  
     }
   });
   function showResult(data) {
@@ -130,6 +141,9 @@
     } else if (data.overall_status === 'needs_attention') {
       statusText = 'Needs Attention';
       colorStyle = 'color:red;';
+          const statusEl = document.getElementById('status');
+    statusEl.textContent = '';
+
     }
     let html = '<p><strong>Status:</strong> <span style="' + colorStyle + '">' + statusText + '</span></p>';
     html += '<p><strong>Summary:</strong> ' + (data.summary_text || 'No summary provided.') + '</p>';
