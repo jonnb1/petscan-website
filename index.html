@@ -35,6 +35,7 @@
       <option value="hydration">Hydration</option>
       <option value="poop">Stool / Poop</option>
     </select>
+
     <label>Common concerns:</label>
     <div class="concerns">
       <label><input type="checkbox" value="Limping / trouble walking"> Limping / trouble walking</label>
@@ -47,20 +48,26 @@
       <label><input type="checkbox" value="Skin redness / itching"> Skin redness / itching</label>
       <label><input type="checkbox" value="Eye discharge / redness"> Eye discharge / redness</label>
     </div>
+
     <label for="notes">Additional notes:</label>
     <textarea id="notes" placeholder="Describe what's going on"></textarea>
+
     <label for="photo">Photo (required):</label>
     <input type="file" id="photo" accept="image/*" required>
+
     <button type="submit">Run AI Scan</button>
   </form>
-<p id="status" style="margin-top:1rem;"></p>
+
+  <p id="status" style="margin-top:1rem;"></p>
   <div id="result" class="result"></div>
+
   <h2>About PetScan AI</h2>
   <p>PetScan AI is an educational tool that helps pet parents think through what they're seeing at home. It uses AI to summarize your notes and photo into simple triage-style guidance.</p>
   <p><strong>What PetScan AI is not:</strong> It is not a veterinarian, does not provide a diagnosis, and does not replace an in-person exam.</p>
   <p><strong>Emergency situations:</strong> If your pet is in distress, contact a veterinarian or emergency clinic immediately.</p>
 </main>
 <footer>&copy; 2025 PetScan AI. All rights reserved.</footer>
+
 <script>
   async function toBase64(file) {
     return new Promise((resolve, reject) => {
@@ -73,23 +80,33 @@
       reader.readAsDataURL(file);
     });
   }
+
   document.getElementById('scan-form').addEventListener('submit', async function(e) {
     e.preventDefault();
+
     const scanType = document.getElementById('scan-type').value;
     const notes = document.getElementById('notes').value.trim();
     const fileInput = document.getElementById('photo');
+
     if (!fileInput.files.length) {
       alert('Please upload a photo.');
       return;
     }
+
     const file = fileInput.files[0];
     const imageBase64 = await toBase64(file);
+
     // gather selected concerns
-    const concerns = Array.from(document.querySelectorAll('.concerns input:checked')).map(c => c.value);
-    const combinedNotes = concerns.length ? 
-      ('Common concerns: ' + concerns.join(', ') + (notes ? '. Additional notes: ' + notes : '')) :
-      notes;
-    // generate random user_id and pet_id for web
+    const concerns = Array.from(
+      document.querySelectorAll('.concerns input:checked')
+    ).map(c => c.value);
+
+    const combinedNotes = concerns.length
+      ? ('Common concerns: ' + concerns.join(', ') +
+         (notes ? '. Additional notes: ' + notes : ''))
+      : notes;
+
+    // generate / reuse random user_id for web
     const existingUserId = localStorage.getItem('petscan_user_id');
     let userId = existingUserId;
     if (!existingUserId) {
@@ -97,13 +114,15 @@
       localStorage.setItem('petscan_user_id', userId);
     }
     const petId = crypto.randomUUID();
-    const payload = {
-        const statusEl = document.getElementById('status');
-  const resultDiv = document.getElementById('result');
-  statusEl.style.color = '';
-  statusEl.textContent = 'Uploading and analyzing...';
-  resultDiv.style.display = 'none';
 
+    // update status UI
+    const statusEl = document.getElementById('status');
+    const resultDiv = document.getElementById('result');
+    statusEl.style.color = '';
+    statusEl.textContent = 'Uploading and analyzing...';
+    resultDiv.style.display = 'none';
+
+    const payload = {
       user_id: userId,
       pet_id: petId,
       species: '',
@@ -112,43 +131,54 @@
       image_base64: imageBase64,
       scan_type: scanType
     };
+
     const endpoint = `https://petscan-backend.onrender.com/webapi/v1/analyze/${scanType}`;
+
     try {
       const resp = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (!resp.ok) throw new Error('Server error: ' + resp.status);
+
+      if (!resp.ok) {
+        throw new Error('Server error: ' + resp.status);
+      }
+
       const data = await resp.json();
-      
       showResult(data);
     } catch (err) {
       const resultDiv = document.getElementById('result');
-          const statusEl = document.getElementById('status');
-    resultDiv.style.display = 'none';
-    statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
-
-  
+      const statusEl = document.getElementById('status');
+      resultDiv.style.display = 'none';
+      statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
     }
   });
+
   function showResult(data) {
     const resultDiv = document.getElementById('result');
+    const statusEl = document.getElementById('status');
+
     let statusText = 'Monitor';
     let colorStyle = 'color:orange;';
+
     if (data.overall_status === 'normal') {
       statusText = 'Looks OK';
       colorStyle = 'color:green;';
     } else if (data.overall_status === 'needs_attention') {
       statusText = 'Needs Attention';
       colorStyle = 'color:red;';
-          const statusEl = document.getElementById('status');
+    }
+
+    // clear the "uploading" text
     statusEl.textContent = '';
 
-    }
     let html = '<p><strong>Status:</strong> <span style="' + colorStyle + '">' + statusText + '</span></p>';
-    html += '<p><strong>Summary:</strong> ' + (data.summary_text || 'No summary provided.') + '</p>';
-    html += '<p><strong>Recommendation:</strong> ' + (data.recommendation_text || 'No recommendation provided.') + '</p>';
+    html += '<p><strong>Summary:</strong> ' +
+            (data.summary_text || 'No summary provided.') + '</p>';
+    html += '<p><strong>Recommendation:</strong> ' +
+            (data.recommendation_text || 'No recommendation provided.') + '</p>';
+
     if (Array.isArray(data.possible_conditions) && data.possible_conditions.length) {
       html += '<p><strong>Possible conditions (not a diagnosis):</strong></p><ul>';
       data.possible_conditions.forEach(c => {
@@ -156,9 +186,11 @@
       });
       html += '</ul>';
     }
+
     if (data.disclaimer) {
       html += '<p style="font-size:smaller;color:#555;">' + data.disclaimer + '</p>';
     }
+
     resultDiv.style.display = 'block';
     resultDiv.innerHTML = html;
   }
