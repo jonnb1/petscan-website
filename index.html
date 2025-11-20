@@ -248,10 +248,10 @@
     window.crypto.randomUUID = uuidv4;
   })();
 
-  const photoInput   = document.getElementById('photo');
-  const preview      = document.getElementById('preview');
-  const statusEl     = document.getElementById('status');
-  const resultDiv    = document.getElementById('result');
+  const photoInput = document.getElementById('photo');
+  const preview    = document.getElementById('preview');
+  const statusEl   = document.getElementById('status');
+  const resultDiv  = document.getElementById('result');
 
   // Image preview
   photoInput.addEventListener('change', () => {
@@ -352,9 +352,10 @@
             body: JSON.stringify({
               user_id: userId,
               pet_id: petId,
+              species: "Unknown",          // 👈 added back so backend Pydantic model is satisfied
               notes: combinedNotes,
               image_base64: imageBase64,
-              image_url: '',
+              image_url: "",
               scan_type: scanType
             })
           }
@@ -379,9 +380,9 @@
     const scanType = document.getElementById('scan-type').value;
 
     const statusMap = {
-      normal:         { label: 'Looks OK',        color: 'green'  },
-      needs_attention:{ label: 'Needs Attention', color: 'red'    },
-      monitor:        { label: 'Monitor',         color: 'orange' }
+      normal:          { label: 'Looks OK',        color: 'green'  },
+      needs_attention: { label: 'Needs Attention', color: 'red'    },
+      monitor:         { label: 'Monitor',         color: 'orange' }
     };
 
     const status = statusMap[data.overall_status] || statusMap.monitor;
