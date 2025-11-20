@@ -34,6 +34,16 @@
     header img {
       height: 60px;
       margin-bottom: 0.5rem;
+      transition: transform 1s linear;
+    }
+
+    .spin {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     main {
@@ -141,13 +151,11 @@
       }
     }
   </style>
-
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7320834425782527" crossorigin="anonymous"></script>
 </head>
 <body>
 
 <header>
-  <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Pet icon" />
+  <img id="cat-icon" src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Cat icon" />
   <h1>PetScan AI</h1>
   <p>AI-powered triage for your pets (not a diagnosis).</p>
 </header>
@@ -215,6 +223,7 @@
     const scanType = document.getElementById('scan-type').value;
     const notes = document.getElementById('notes').value.trim();
     const fileInput = document.getElementById('photo');
+    const catIcon = document.getElementById('cat-icon');
 
     if (!fileInput.files.length) {
       alert('Please upload a photo.');
@@ -243,6 +252,7 @@
     statusEl.style.color = '';
     statusEl.textContent = 'Uploading and analyzing...';
     resultDiv.style.display = 'none';
+    catIcon.classList.add('spin');
 
     const payload = {
       user_id: userId,
@@ -263,8 +273,10 @@
 
       if (!resp.ok) throw new Error('Server error: ' + resp.status);
       const data = await resp.json();
+      catIcon.classList.remove('spin');
       showResult(data);
     } catch (err) {
+      catIcon.classList.remove('spin');
       resultDiv.style.display = 'none';
       statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
     }
