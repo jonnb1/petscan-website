@@ -14,6 +14,14 @@
       --background: #f9fafa;
     }
 
+    body.dark {
+      --primary: #0a5c75;
+      --secondary: #182430;
+      --highlight: #ff9f43;
+      --text-dark: #ecf0f1;
+      --background: #0e141b;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
@@ -28,7 +36,7 @@
       text-align: center;
       padding: 2rem 1rem;
       border-bottom: 5px solid var(--highlight);
-      background-image: 
+      background-image:
         linear-gradient(rgba(10, 92, 117, 0.85), rgba(14, 116, 143, 0.85)),
         url('/mnt/data/8E2D3092-7248-4DEC-8502-641E0070CD24.jpeg');
       background-size: cover;
@@ -40,6 +48,19 @@
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
 
+    .toggle-dark {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--highlight);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
     main {
       max-width: 800px;
       margin: 2rem auto;
@@ -47,6 +68,10 @@
       background-color: #fff;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(0,0,0,0.08);
+    }
+
+    body.dark main {
+      background-color: var(--secondary);
     }
 
     h1, h2 {
@@ -126,12 +151,6 @@
       background-color: var(--secondary);
       border-radius: 8px;
       display: none;
-      animation: fadeInUp 0.5s ease;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
 
     .image-preview {
@@ -144,6 +163,25 @@
     #status {
       font-size: 1rem;
       margin-top: 1rem;
+    }
+
+    .history-panel {
+      margin-top: 2rem;
+      background-color: var(--secondary);
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    }
+
+    .history-entry {
+      margin-bottom: 1rem;
+      border-left: 3px solid var(--primary);
+      padding-left: 1rem;
+      cursor: pointer;
+    }
+
+    .history-entry:hover {
+      background-color: rgba(0, 0, 0, 0.03);
     }
 
     footer {
@@ -163,10 +201,18 @@
       button {
         width: 100%;
       }
+
+      .toggle-dark {
+        top: 10px;
+        right: 10px;
+        padding: 0.4rem 0.8rem;
+      }
     }
   </style>
 </head>
 <body>
+
+<button class="toggle-dark" onclick="toggleDarkMode()">🌙 Dark Mode</button>
 
 <header>
   <h1>🐱🐶 PawScan AI</h1>
@@ -216,6 +262,11 @@
   <div id="status"></div>
   <div id="result" class="result"></div>
 
+  <div id="history" class="history-panel">
+    <h2>Recent Scans</h2>
+    <div id="history-entries"></div>
+  </div>
+
   <h2>About PawScan AI</h2>
   <p>This is an educational tool to help pet parents think through what they're seeing at home. It’s not a diagnosis or replacement for veterinary care.</p>
   <p><strong>Emergency?</strong> If your pet is in distress, contact a veterinarian or emergency clinic immediately.</p>
@@ -229,17 +280,23 @@
   const statusEl = document.getElementById('status');
   const resultDiv = document.getElementById('result');
 
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark');
+    localStorage.setItem('dark_mode', document.body.classList.contains('dark') ? '1' : '0');
+  }
+
+  if (localStorage.getItem('dark_mode') === '1') {
+    document.body.classList.add('dark');
+  }
+
   photoInput.addEventListener('change', () => {
     const file = photoInput.files[0];
-
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
-
-      reader.onload = (e) => {
+      reader.onload = e => {
         preview.src = e.target.result;
         preview.style.display = 'block';
       };
-
       reader.readAsDataURL(file);
     } else {
       preview.style.display = 'none';
@@ -247,11 +304,49 @@
     }
   });
 
+  function saveScanToHistory(data, petName, scanType) {
+    const history = JSON.parse(localStorage.getItem('scan_history') || '[]');
+    history.unshift({
+      timestamp: new Date().toLocaleString(),
+      petName: petName || 'Unnamed',
+      scanType,
+      status: data.overall_status,
+      summary: data.summary_text,
+      recommendation: data.recommendation_text
+    });
+    localStorage.setItem('scan_history', JSON.stringify(history.slice(0, 10)));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const history = JSON.parse(localStorage.getItem('scan_history') || '[]');
+    const container = document.getElementById('history-entries');
+    container.innerHTML = '';
+    history.forEach(entry => {
+      const div = document.createElement('div');
+      div.className = 'history-entry';
+      div.innerHTML = `
+        <strong>${entry.petName}</strong> (${entry.scanType})<br>
+        <em>${entry.timestamp}</em><br>
+        <span>Status: <strong>${entry.status}</strong></span><br>
+        <details>
+          <summary>Summary</summary>
+          <p>${entry.summary}</p>
+          <p><strong>Recommendation:</strong> ${entry.recommendation}</p>
+        </details>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  renderHistory();
+
   document.getElementById('scan-form').addEventListener('submit', async function(e) {
     e.preventDefault();
 
     const scanType = document.getElementById('scan-type').value;
     const notes = document.getElementById('notes').value.trim();
+    const petName = document.getElementById('pet-name').value.trim();
     const file = photoInput.files[0];
 
     if (!file) {
@@ -301,6 +396,11 @@
   });
 
   function showResult(data) {
+    const resultDiv = document.getElementById('result');
+    const statusEl = document.getElementById('status');
+    const petName = document.getElementById('pet-name').value.trim();
+    const scanType = document.getElementById('scan-type').value;
+
     const statusMap = {
       normal: { label: 'Looks OK', color: 'green' },
       needs_attention: { label: 'Needs Attention', color: 'red' },
@@ -310,7 +410,7 @@
     const status = statusMap[data.overall_status] || statusMap.monitor;
 
     resultDiv.innerHTML = `
-      <p><strong>Status:</strong> <span style="color:${status.color};">${status.label}</span></p>
+      <p><strong>Status for ${petName || 'your pet'}:</strong> <span style="color:${status.color};">${status.label}</span></p>
       <p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>
       <p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>
       ${Array.isArray(data.possible_conditions) && data.possible_conditions.length
@@ -322,6 +422,8 @@
 
     resultDiv.style.display = 'block';
     statusEl.textContent = '';
+
+    saveScanToHistory(data, petName, scanType);
   }
 </script>
 
