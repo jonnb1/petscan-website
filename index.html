@@ -21,49 +21,23 @@
       color: var(--text-dark);
     }
 
-  header {
-  position: relative;
-  background: linear-gradient(135deg, var(--primary), #0e748f);
-  color: #fdfdfd;
-  text-align: center;
-  padding: 2rem 1rem;
-  border-bottom: 5px solid var(--highlight);
-  background-image: 
-    linear-gradient(rgba(10, 92, 117, 0.9), rgba(14, 116, 143, 0.9)),
-    url('/mnt/data/8E2D3092-7248-4DEC-8502-641E0070CD24.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-header * {
-  text-shadow: 0 1px 3px rgba(0,0,0,0.4); /* improves visibility */
-}
-
-    .pet-icons {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
+    header {
+      position: relative;
+      background: linear-gradient(135deg, var(--primary), #0e748f);
+      color: #fdfdfd;
+      text-align: center;
+      padding: 2rem 1rem;
+      border-bottom: 5px solid var(--highlight);
+      background-image: 
+        linear-gradient(rgba(10, 92, 117, 0.85), rgba(14, 116, 143, 0.85)),
+        url('/mnt/data/8E2D3092-7248-4DEC-8502-641E0070CD24.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
 
-    .pet-icons img {
-      height: 60px;
-    }
-
-    #cat-icon {
-      transition: transform 1s linear;
-    }
-
-    .spin {
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
+    header * {
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
 
     main {
@@ -163,6 +137,8 @@ header * {
     .image-preview {
       margin-top: 1rem;
       max-height: 200px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
 
     #status {
@@ -193,11 +169,7 @@ header * {
 <body>
 
 <header>
-  <div class="pet-icons">
-    <img id="dog-icon" src="https://cdn-icons-png.flaticon.com/512/616/616430.png" alt="Dog icon" />
-    <img id="cat-icon" src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Cat icon" />
-  </div>
-  <h1>PawScan AI</h1>
+  <h1>🐱🐶 PawScan AI</h1>
   <p>AI-powered triage for your pets — educational only, not a diagnosis.</p>
 </header>
 
@@ -206,12 +178,6 @@ header * {
   <form id="scan-form">
     <label for="pet-name">Pet Name:</label>
     <input type="text" id="pet-name" placeholder="E.g. Bella" />
-
-    <label for="pet-breed">Breed (optional):</label>
-    <input type="text" id="pet-breed" placeholder="E.g. Golden Retriever" />
-
-    <label for="pet-age">Age (optional):</label>
-    <input type="text" id="pet-age" placeholder="E.g. 4 years" />
 
     <label for="scan-type">Scan Type:</label>
     <select id="scan-type" required>
@@ -258,77 +224,65 @@ header * {
 <footer>&copy; 2025 PawScan AI. All rights reserved.</footer>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const scanForm = document.getElementById('scan-form');
-    const catIcon = document.getElementById('cat-icon');
-    const preview = document.getElementById('preview');
-    const photoInput = document.getElementById('photo');
-    const statusEl = document.getElementById('status');
-    const resultDiv = document.getElementById('result');
+  const photoInput = document.getElementById('photo');
+  const preview = document.getElementById('preview');
+  const statusEl = document.getElementById('status');
+  const resultDiv = document.getElementById('result');
 
-    photoInput.addEventListener('change', () => {
-      const file = photoInput.files[0];
-      if (file) {
-        preview.src = URL.createObjectURL(file);
+  photoInput.addEventListener('change', () => {
+    const file = photoInput.files[0];
+
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        preview.src = e.target.result;
         preview.style.display = 'block';
-      }
-    });
+      };
 
-    function emergencyCheck(text) {
-      const triggers = ['collapsed', 'not breathing', 'seizure', 'can’t walk', 'blood loss', 'severe vomiting'];
-      return triggers.some(trigger => text.toLowerCase().includes(trigger));
+      reader.readAsDataURL(file);
+    } else {
+      preview.style.display = 'none';
+      preview.src = '';
+    }
+  });
+
+  document.getElementById('scan-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const scanType = document.getElementById('scan-type').value;
+    const notes = document.getElementById('notes').value.trim();
+    const file = photoInput.files[0];
+
+    if (!file) {
+      alert('Please upload a photo.');
+      return;
     }
 
-    async function toBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(',')[1]);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
+    const concerns = Array.from(document.querySelectorAll('.concerns input:checked')).map(c => c.value);
+    const combinedNotes = concerns.length
+      ? 'Common concerns: ' + concerns.join(', ') + (notes ? '. Notes: ' + notes : '')
+      : notes;
 
-    scanForm.addEventListener('submit', async e => {
-      e.preventDefault();
-
-      const scanType = document.getElementById('scan-type').value;
-      const notes = document.getElementById('notes').value.trim();
-      const petName = document.getElementById('pet-name').value.trim();
-      const petBreed = document.getElementById('pet-breed').value.trim();
-      const petAge = document.getElementById('pet-age').value.trim();
-
-      const file = photoInput.files[0];
-      if (!file) return alert('Please upload a photo.');
-
-      const concerns = Array.from(document.querySelectorAll('.concerns input:checked')).map(c => c.value);
-      const combinedNotes = concerns.length
-        ? 'Common concerns: ' + concerns.join(', ') + (notes ? '. Notes: ' + notes : '')
-        : notes;
-
-      if (emergencyCheck(combinedNotes)) {
-        alert('⚠️ This may be an emergency. Please consult a vet immediately.');
-      }
-
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const imageBase64 = reader.result.split(',')[1];
       const userId = localStorage.getItem('pawscan_user_id') || crypto.randomUUID();
-      localStorage.setItem('pawscan_user_id', userId);
+      if (!localStorage.getItem('pawscan_user_id')) {
+        localStorage.setItem('pawscan_user_id', userId);
+      }
       const petId = crypto.randomUUID();
 
-      catIcon.classList.add('spin');
-      statusEl.innerHTML = '📤 Uploading...';
+      statusEl.textContent = 'Analyzing...';
       resultDiv.style.display = 'none';
 
-      const imageBase64 = await toBase64(file);
-
       try {
-        statusEl.innerHTML = '🧠 Analyzing image and notes...';
-
         const resp = await fetch(`https://petscan-backend.onrender.com/webapi/v1/analyze/${scanType}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             user_id: userId,
             pet_id: petId,
-            species: '',
             notes: combinedNotes,
             image_base64: imageBase64,
             image_url: '',
@@ -337,37 +291,38 @@ header * {
         });
 
         const data = await resp.json();
-        catIcon.classList.remove('spin');
-        showResult(data, petName);
+        showResult(data);
       } catch (err) {
-        catIcon.classList.remove('spin');
         statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
       }
-    });
+    };
 
-    function showResult(data, petName) {
-      const statusMap = {
-        normal: { label: 'Looks OK', color: 'green' },
-        needs_attention: { label: 'Needs Attention', color: 'red' },
-        monitor: { label: 'Monitor', color: 'orange' }
-      };
-
-      const status = statusMap[data.overall_status] || statusMap['monitor'];
-
-      statusEl.innerHTML = '';
-      resultDiv.innerHTML = `
-        <p><strong>Status for ${petName || 'your pet'}:</strong> <span style="color:${status.color};">${status.label}</span></p>
-        <p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>
-        <p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>
-        ${data.possible_conditions?.length
-          ? '<p><strong>Possible conditions:</strong><ul>' + data.possible_conditions.map(c => `<li>${c}</li>`).join('') + '</ul></p>'
-          : ''
-        }
-        ${data.disclaimer ? `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>` : ''}
-      `;
-      resultDiv.style.display = 'block';
-    }
+    reader.readAsDataURL(file);
   });
+
+  function showResult(data) {
+    const statusMap = {
+      normal: { label: 'Looks OK', color: 'green' },
+      needs_attention: { label: 'Needs Attention', color: 'red' },
+      monitor: { label: 'Monitor', color: 'orange' }
+    };
+
+    const status = statusMap[data.overall_status] || statusMap.monitor;
+
+    resultDiv.innerHTML = `
+      <p><strong>Status:</strong> <span style="color:${status.color};">${status.label}</span></p>
+      <p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>
+      <p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>
+      ${Array.isArray(data.possible_conditions) && data.possible_conditions.length
+        ? '<p><strong>Possible conditions:</strong><ul>' + data.possible_conditions.map(c => `<li>${c}</li>`).join('') + '</ul></p>'
+        : ''
+      }
+      ${data.disclaimer ? `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>` : ''}
+    `;
+
+    resultDiv.style.display = 'block';
+    statusEl.textContent = '';
+  }
 </script>
 
 </body>
