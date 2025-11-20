@@ -1,11 +1,10 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PetScan AI</title>
+  <title>PawScan AI</title>
 
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet"/>
 
   <style>
@@ -31,9 +30,20 @@
       text-align: center;
     }
 
-    header img {
-      height: 60px;
+    .pet-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
       margin-bottom: 0.5rem;
+    }
+
+    .pet-icons img {
+      height: 60px;
+    }
+
+    #cat-icon {
       transition: transform 1s linear;
     }
 
@@ -43,7 +53,7 @@
 
     @keyframes spin {
       from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      to   { transform: rotate(360deg); }
     }
 
     main {
@@ -155,8 +165,11 @@
 <body>
 
 <header>
-  <img id="cat-icon" src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Cat icon" />
-  <h1>PewScan AI</h1>
+  <div class="pet-icons">
+    <img id="dog-icon" src="https://cdn-icons-png.flaticon.com/512/616/616430.png" alt="Dog icon" />
+    <img id="cat-icon" src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Cat icon" />
+  </div>
+  <h1>PawScan AI</h1>
   <p>AI-powered triage for your pets (not a diagnosis).</p>
 </header>
 
@@ -199,13 +212,13 @@
   <p id="status" style="margin-top:1rem;"></p>
   <div id="result" class="result"></div>
 
-  <h2>About PetScan AI</h2>
-  <p>PetScan AI is an educational tool that helps pet parents think through what they're seeing at home. It uses AI to summarize your notes and photo into simple triage-style guidance.</p>
-  <p><strong>What PetScan AI is not:</strong> It is not a veterinarian, does not provide a diagnosis, and does not replace an in-person exam.</p>
+  <h2>About PawScan AI</h2>
+  <p>PawScan AI is an educational tool that helps pet parents think through what they're seeing at home. It uses AI to summarize your notes and photo into simple triage-style guidance.</p>
+  <p><strong>What PawScan AI is not:</strong> It is not a veterinarian, does not provide a diagnosis, and does not replace an in-person exam.</p>
   <p><strong>Emergency situations:</strong> If your pet is in distress, contact a veterinarian or emergency clinic immediately.</p>
 </main>
 
-<footer>&copy; 2025 PetScan AI. All rights reserved.</footer>
+<footer>&copy; 2025 PawScan AI. All rights reserved.</footer>
 
 <script>
   async function toBase64(file) {
@@ -242,9 +255,9 @@
          (notes ? '. Additional notes: ' + notes : ''))
       : notes;
 
-    const existingUserId = localStorage.getItem('petscan_user_id');
+    const existingUserId = localStorage.getItem('pawscan_user_id');
     let userId = existingUserId || crypto.randomUUID();
-    if (!existingUserId) localStorage.setItem('petscan_user_id', userId);
+    if (!existingUserId) localStorage.setItem('pawscan_user_id', userId);
 
     const petId = crypto.randomUUID();
     const statusEl = document.getElementById('status');
