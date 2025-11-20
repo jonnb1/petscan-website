@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PawScan AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet"/>
-
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --primary: #0a5c75;
@@ -16,17 +15,21 @@
     }
 
     body {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       background-color: var(--background);
       color: var(--text-dark);
     }
 
     header {
-      background-color: var(--primary);
-      color: #fff;
-      padding: 1.5rem;
+      background: linear-gradient(135deg, var(--primary), #0e748f);
+      color: white;
       text-align: center;
+      padding: 2rem 1rem;
+      background-image: url('https://www.transparenttextures.com/patterns/paw-print.png');
+      background-repeat: repeat;
+      background-size: 150px;
+      border-bottom: 5px solid var(--highlight);
     }
 
     .pet-icons {
@@ -35,7 +38,7 @@
       gap: 1rem;
       align-items: center;
       flex-wrap: wrap;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
 
     .pet-icons img {
@@ -69,9 +72,9 @@
     }
 
     h2 {
-      border-bottom: 1px solid #ddd;
+      border-bottom: 2px solid #ddd;
       padding-bottom: 0.3rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     label {
@@ -80,7 +83,7 @@
       font-weight: 600;
     }
 
-    select, textarea, input[type=file] {
+    select, textarea, input[type="text"], input[type="file"] {
       width: 100%;
       padding: 0.6rem;
       margin-top: 0.4rem;
@@ -102,29 +105,30 @@
     }
 
     .concerns label {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.9rem;
       background-color: var(--secondary);
       padding: 0.4rem 0.6rem;
       border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
     }
 
     button {
       margin-top: 1.5rem;
-      padding: 0.7rem 1.4rem;
-      background-color: var(--primary);
-      color: white;
+      padding: 0.8rem 1.6rem;
+      background: linear-gradient(to right, var(--highlight), #ffa94d);
       border: none;
-      border-radius: 6px;
-      cursor: pointer;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
       font-size: 1rem;
-      transition: background-color 0.2s;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, background 0.3s ease;
     }
 
     button:hover {
-      background-color: #08708a;
+      background: #ff8f1a;
+      transform: translateY(-2px);
     }
 
     .note-msg {
@@ -136,15 +140,31 @@
     .result {
       margin-top: 2rem;
       padding: 1.2rem;
-      border-radius: 8px;
+      border-left: 6px solid var(--primary);
       background-color: var(--secondary);
-      border: 1px solid #ccc;
+      border-radius: 8px;
       display: none;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .image-preview {
+      margin-top: 1rem;
+      max-height: 200px;
+    }
+
+    #status {
+      font-size: 1rem;
+      margin-top: 1rem;
     }
 
     footer {
       text-align: center;
-      margin-top: 2rem;
+      margin-top: 3rem;
       padding: 1rem 0;
       color: #777;
       font-size: 0.9rem;
@@ -155,6 +175,7 @@
         margin: 1rem;
         padding: 1.2rem;
       }
+
       button {
         width: 100%;
       }
@@ -169,12 +190,21 @@
     <img id="cat-icon" src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Cat icon" />
   </div>
   <h1>PawScan AI</h1>
-  <p>AI-powered triage for your pets (not a diagnosis).</p>
+  <p>AI-powered triage for your pets — educational only, not a diagnosis.</p>
 </header>
 
 <main>
   <h2>Run a Scan</h2>
   <form id="scan-form">
+    <label for="pet-name">Pet Name:</label>
+    <input type="text" id="pet-name" placeholder="E.g. Bella" />
+
+    <label for="pet-breed">Breed (optional):</label>
+    <input type="text" id="pet-breed" placeholder="E.g. Golden Retriever" />
+
+    <label for="pet-age">Age (optional):</label>
+    <input type="text" id="pet-age" placeholder="E.g. 4 years" />
+
     <label for="scan-type">Scan Type:</label>
     <select id="scan-type" required>
       <option value="coat">Coat / Skin</option>
@@ -186,41 +216,61 @@
 
     <label>Common concerns:</label>
     <div class="concerns">
-      <label><input type="checkbox" value="Limping / trouble walking"> Limping / trouble walking</label>
-      <label><input type="checkbox" value="Not eating / reduced appetite"> Not eating / reduced appetite</label>
+      <label><input type="checkbox" value="Limping / trouble walking"> Limping</label>
+      <label><input type="checkbox" value="Not eating / reduced appetite"> Not eating</label>
       <label><input type="checkbox" value="Vomiting"> Vomiting</label>
       <label><input type="checkbox" value="Diarrhea"> Diarrhea</label>
-      <label><input type="checkbox" value="Lethargy / low energy"> Lethargy / low energy</label>
-      <label><input type="checkbox" value="Coughing or sneezing"> Coughing or sneezing</label>
-      <label><input type="checkbox" value="Breathing seems harder"> Breathing seems harder</label>
-      <label><input type="checkbox" value="Skin redness / itching"> Skin redness / itching</label>
-      <label><input type="checkbox" value="Eye discharge / redness"> Eye discharge / redness</label>
+      <label><input type="checkbox" value="Lethargy / low energy"> Lethargy</label>
+      <label><input type="checkbox" value="Coughing or sneezing"> Sneezing</label>
+      <label><input type="checkbox" value="Breathing seems harder"> Breathing issues</label>
+      <label><input type="checkbox" value="Skin redness / itching"> Skin issues</label>
+      <label><input type="checkbox" value="Eye discharge / redness"> Eye redness</label>
     </div>
 
     <label for="notes">Additional notes:</label>
     <textarea id="notes" placeholder="Describe what's going on"></textarea>
 
-    <label for="photo">Photo (required):</label>
+    <label for="photo">Upload Photo (required):</label>
     <input type="file" id="photo" accept="image/*" required>
+    <img id="preview" class="image-preview" style="display:none;" />
 
-    <p class="note-msg">Your photo and notes are securely analyzed by our AI for early signs. We care about your pet’s safety 💖</p>
+    <p class="note-msg">Your photo and notes are securely analyzed by our AI for early signs.</p>
 
-    <button type="submit">Run AI Scan</button>
+    <button type="submit">🔍 Run AI Scan</button>
   </form>
 
-  <p id="status" style="margin-top:1rem;"></p>
+  <div id="status"></div>
   <div id="result" class="result"></div>
 
   <h2>About PawScan AI</h2>
-  <p>PawScan AI is an educational tool that helps pet parents think through what they're seeing at home. It uses AI to summarize your notes and photo into simple triage-style guidance.</p>
-  <p><strong>What PawScan AI is not:</strong> It is not a veterinarian, does not provide a diagnosis, and does not replace an in-person exam.</p>
-  <p><strong>Emergency situations:</strong> If your pet is in distress, contact a veterinarian or emergency clinic immediately.</p>
+  <p>This is an educational tool to help pet parents think through what they're seeing at home. It’s not a diagnosis or replacement for veterinary care.</p>
+  <p><strong>Emergency?</strong> If your pet is in distress, contact a veterinarian or emergency clinic immediately.</p>
 </main>
 
 <footer>&copy; 2025 PawScan AI. All rights reserved.</footer>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const scanForm = document.getElementById('scan-form');
+    const catIcon = document.getElementById('cat-icon');
+    const preview = document.getElementById('preview');
+    const photoInput = document.getElementById('photo');
+    const statusEl = document.getElementById('status');
+    const resultDiv = document.getElementById('result');
+
+    photoInput.addEventListener('change', () => {
+      const file = photoInput.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+      }
+    });
+
+    function emergencyCheck(text) {
+      const triggers = ['collapsed', 'not breathing', 'seizure', 'can’t walk', 'blood loss', 'severe vomiting'];
+      return triggers.some(trigger => text.toLowerCase().includes(trigger));
+    }
+
     async function toBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -230,104 +280,84 @@
       });
     }
 
-    document.getElementById('scan-form').addEventListener('submit', async function(e) {
+    scanForm.addEventListener('submit', async e => {
       e.preventDefault();
 
       const scanType = document.getElementById('scan-type').value;
       const notes = document.getElementById('notes').value.trim();
-      const fileInput = document.getElementById('photo');
-      const catIcon = document.getElementById('cat-icon');
+      const petName = document.getElementById('pet-name').value.trim();
+      const petBreed = document.getElementById('pet-breed').value.trim();
+      const petAge = document.getElementById('pet-age').value.trim();
 
-      if (!fileInput.files.length) {
-        alert('Please upload a photo.');
-        return;
-      }
+      const file = photoInput.files[0];
+      if (!file) return alert('Please upload a photo.');
 
-      const file = fileInput.files[0];
-      const imageBase64 = await toBase64(file);
-
-      const concerns = Array.from(
-        document.querySelectorAll('.concerns input:checked')
-      ).map(c => c.value);
-
+      const concerns = Array.from(document.querySelectorAll('.concerns input:checked')).map(c => c.value);
       const combinedNotes = concerns.length
-        ? ('Common concerns: ' + concerns.join(', ') +
-           (notes ? '. Additional notes: ' + notes : ''))
+        ? 'Common concerns: ' + concerns.join(', ') + (notes ? '. Notes: ' + notes : '')
         : notes;
 
-      const existingUserId = localStorage.getItem('pawscan_user_id');
-      let userId = existingUserId || crypto.randomUUID();
-      if (!existingUserId) localStorage.setItem('pawscan_user_id', userId);
+      if (emergencyCheck(combinedNotes)) {
+        alert('⚠️ This may be an emergency. Please consult a vet immediately.');
+      }
 
+      const userId = localStorage.getItem('pawscan_user_id') || crypto.randomUUID();
+      localStorage.setItem('pawscan_user_id', userId);
       const petId = crypto.randomUUID();
-      const statusEl = document.getElementById('status');
-      const resultDiv = document.getElementById('result');
-      statusEl.style.color = '';
-      statusEl.textContent = 'Uploading and analyzing...';
-      resultDiv.style.display = 'none';
-      catIcon.classList.add('spin');
 
-      const payload = {
-        user_id: userId,
-        pet_id: petId,
-        species: '',
-        notes: combinedNotes,
-        image_url: '',
-        image_base64: imageBase64,
-        scan_type: scanType
-      };
+      catIcon.classList.add('spin');
+      statusEl.innerHTML = '📤 Uploading...';
+      resultDiv.style.display = 'none';
+
+      const imageBase64 = await toBase64(file);
 
       try {
+        statusEl.innerHTML = '🧠 Analyzing image and notes...';
+
         const resp = await fetch(`https://petscan-backend.onrender.com/webapi/v1/analyze/${scanType}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({
+            user_id: userId,
+            pet_id: petId,
+            species: '',
+            notes: combinedNotes,
+            image_base64: imageBase64,
+            image_url: '',
+            scan_type: scanType
+          })
         });
 
-        if (!resp.ok) throw new Error('Server error: ' + resp.status);
         const data = await resp.json();
         catIcon.classList.remove('spin');
-        showResult(data);
+        showResult(data, petName);
       } catch (err) {
         catIcon.classList.remove('spin');
-        resultDiv.style.display = 'none';
         statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
       }
     });
 
-    function showResult(data) {
-      const resultDiv = document.getElementById('result');
-      const statusEl = document.getElementById('status');
+    function showResult(data, petName) {
+      const statusMap = {
+        normal: { label: 'Looks OK', color: 'green' },
+        needs_attention: { label: 'Needs Attention', color: 'red' },
+        monitor: { label: 'Monitor', color: 'orange' }
+      };
 
-      let statusText = 'Monitor';
-      let colorStyle = 'color:orange;';
-      if (data.overall_status === 'normal') {
-        statusText = 'Looks OK';
-        colorStyle = 'color:green;';
-      } else if (data.overall_status === 'needs_attention') {
-        statusText = 'Needs Attention';
-        colorStyle = 'color:red;';
-      }
+      const status = statusMap[data.overall_status] || statusMap['monitor'];
 
-      statusEl.textContent = '';
-      let html = `<p><strong>Status:</strong> <span style="${colorStyle}">${statusText}</span></p>`;
-      html += `<p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>`;
-      html += `<p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>`;
-
-      if (Array.isArray(data.possible_conditions) && data.possible_conditions.length) {
-        html += '<p><strong>Possible conditions (not a diagnosis):</strong></p><ul>';
-        data.possible_conditions.forEach(c => {
-          html += `<li>${c}</li>`;
-        });
-        html += '</ul>';
-      }
-
-      if (data.disclaimer) {
-        html += `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>`;
-      }
-
+      statusEl.innerHTML = '';
+      resultDiv.innerHTML = `
+        <p><strong>Status for ${petName || 'your pet'}:</strong> <span style="color:${status.color};">${status.label}</span></p>
+        <p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>
+        <p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>
+        ${data.possible_conditions?.length
+          ? '<p><strong>Possible conditions:</strong><ul>' + data.possible_conditions.map(c => `<li>${c}</li>`).join('') + '</ul></p>'
+          : ''
+        }
+        ${data.disclaimer ? `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>` : ''}
+      `;
       resultDiv.style.display = 'block';
-      resultDiv.innerHTML = html;
     }
   });
 </script>
