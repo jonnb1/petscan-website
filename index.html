@@ -4,60 +4,278 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PawScan AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter&display=swap" rel="stylesheet"/>
+  <title>PawScan AI – Pet Triage Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 
   <style>
     :root {
       --primary: #0a5c75;
+      --primary-dark: #064055;
       --secondary: #f0f4f5;
       --highlight: #ff9f43;
-      --text-dark: #2c3e50;
-      --background: #f9fafa;
+      --text-dark: #1f2933;
+      --text-muted: #6b7280;
+      --background: #f3f5f7;
+      --danger: #e11d48;
+      --success: #059669;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      background-color: var(--background);
+      background: radial-gradient(circle at top, #e0f3f8, #f3f5f7 55%);
       color: var(--text-dark);
     }
 
-    header {
-      background: linear-gradient(135deg, var(--primary), #0e748f);
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Top nav */
+
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 30% 20%, #ffffff, #0a5c75 80%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: white;
-      text-align: center;
-      padding: 2rem 1rem;
-      border-bottom: 5px solid var(--highlight);
+      font-size: 18px;
     }
 
-    header * {
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    .logo-text {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
     }
 
-    main {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 2rem;
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.08);
+    .nav-right {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
     }
 
-    h1, h2 {
-      margin-top: 0;
+    .chip {
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(148,163,184,0.3);
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
     }
 
-    h2 {
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 0.3rem;
-      margin-bottom: 1.5rem;
+    /* Hero */
+
+    .hero-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.75rem;
+      align-items: center;
     }
 
-    label {
-      display: block;
-      margin-top: 1rem;
+    .hero-main {
+      flex: 1 1 320px;
+      min-width: 0;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--primary-dark);
       font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-title {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 2.5vw + 1.2rem, 2.4rem);
+      margin: 0 0 0.5rem;
+      color: var(--primary-dark);
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      max-width: 32rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.1rem;
+    }
+
+    .hero-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .hero-bullets li span.icon {
+      font-size: 1rem;
+      margin-top: 0.05rem;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .hero-cta-btn {
+      padding: 0.7rem 1.4rem;
+      background: linear-gradient(to right, var(--primary), #0e748f);
+      border-radius: 999px;
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.18);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .hero-cta-btn span.icon {
+      font-size: 1rem;
+    }
+
+    .hero-caption {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .hero-side-card {
+      flex: 0 1 320px;
+      min-width: 0;
+      background: rgba(255,255,255,0.9);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 10px 25px rgba(15,23,42,0.15);
+      border: 1px solid rgba(148,163,184,0.2);
+      backdrop-filter: blur(6px);
+      font-size: 0.85rem;
+    }
+
+    .hero-side-title {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-side-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .hero-pill {
+      padding: 0.1rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: #ecfeff;
+      color: #0e7490;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Main content card */
+
+    .page-main {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      padding: 0 1.5rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 1.75rem;
+    }
+
+    @media (max-width: 900px) {
+      .card-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1.6rem 1.5rem;
+      box-shadow: 0 12px 30px rgba(15,23,42,0.12);
+      border: 1px solid rgba(148,163,184,0.25);
+    }
+
+    .card h2 {
+      margin: 0 0 0.4rem;
+      border: none;
+      padding: 0;
+    }
+
+    .card-subtitle {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 1.1rem;
+    }
+
+    /* Form layout */
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .form-group {
+      flex: 1 1 160px;
+      min-width: 0;
+    }
+
+    .form-group label {
+      display: block;
+      margin-top: 0.3rem;
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+      font-size: 0.85rem;
     }
 
     select,
@@ -65,174 +283,341 @@
     input[type="text"],
     input[type="file"] {
       width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.4rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      transition: border-color 0.2s;
-      box-sizing: border-box;
+      padding: 0.55rem 0.6rem;
+      margin: 0;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      background-color: #f9fafb;
     }
 
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--primary);
-      outline: none;
+    textarea {
+      min-height: 80px;
+      resize: vertical;
     }
 
     .concerns {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
+      gap: 0.4rem;
+      margin-top: 0.35rem;
     }
 
     .concerns label {
       background-color: var(--secondary);
-      padding: 0.4rem 0.6rem;
-      border-radius: 4px;
-      font-size: 0.9rem;
+      padding: 0.32rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      border: 1px solid rgba(148,163,184,0.3);
     }
 
-    button {
-      margin-top: 1.5rem;
-      padding: 0.8rem 1.6rem;
-      background: linear-gradient(to right, var(--highlight), #ffa94d);
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease, background 0.3s ease;
-    }
-
-    button:hover {
-      background: #ff8f1a;
-      transform: translateY(-2px);
+    .concerns input {
+      accent-color: var(--primary);
     }
 
     .note-msg {
-      font-size: 0.9rem;
-      color: #777;
-      margin-top: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
     }
 
-    .result {
-      margin-top: 2rem;
-      padding: 1.2rem;
-      border-left: 6px solid var(--primary);
-      background-color: var(--secondary);
-      border-radius: 8px;
-      display: none;
+    .btn-primary {
+      margin-top: 1.1rem;
+      padding: 0.75rem 1.4rem;
+      background: linear-gradient(to right, var(--primary), #0e748f);
+      border: none;
+      border-radius: 999px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      width: 100%;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.7;
+      cursor: default;
+    }
+
+    .btn-primary span.icon {
+      font-size: 1rem;
     }
 
     .image-preview {
-      margin-top: 1rem;
-      max-height: 200px;
+      margin-top: 0.6rem;
+      max-height: 180px;
       border-radius: 8px;
       box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      display: none;
     }
 
     #status {
-      font-size: 1rem;
-      margin-top: 1rem;
+      font-size: 0.9rem;
+      margin-top: 0.6rem;
+      min-height: 1.1rem;
     }
 
-    .history-panel {
-      margin-top: 2rem;
-      background-color: var(--secondary);
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    /* Result / history */
+
+    .result {
+      margin-top: 1.2rem;
+      padding: 1rem 1rem 0.9rem;
+      border-radius: 10px;
+      background: #f1f5f9;
+      border-left: 5px solid var(--primary);
+      display: none;
+      font-size: 0.9rem;
+    }
+
+    .pill-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .pill-status--ok {
+      background: #ecfdf3;
+      color: var(--success);
+    }
+
+    .pill-status--monitor {
+      background: #fffbeb;
+      color: #d97706;
+    }
+
+    .pill-status--attention {
+      background: #fdf2f8;
+      color: var(--danger);
+    }
+
+    .history-panel h3 {
+      margin-top: 0;
+      margin-bottom: 0.8rem;
+      font-size: 1rem;
     }
 
     .history-entry {
-      margin-bottom: 1rem;
+      margin-bottom: 0.8rem;
+      border-radius: 8px;
+      padding: 0.6rem 0.7rem;
+      background: #f8fafc;
       border-left: 3px solid var(--primary);
-      padding-left: 1rem;
-      cursor: pointer;
+      font-size: 0.85rem;
     }
 
-    .history-entry:hover {
-      background-color: rgba(0, 0, 0, 0.03);
+    .history-entry strong {
+      font-weight: 600;
+    }
+
+    .history-entry em {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    .history-entry details {
+      margin-top: 0.25rem;
+    }
+
+    /* Info card */
+
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.3rem 0 0;
+      font-size: 0.86rem;
+    }
+
+    .info-list li {
+      margin-bottom: 0.4rem;
+      color: var(--text-muted);
     }
 
     footer {
       text-align: center;
-      margin-top: 3rem;
-      padding: 1rem 0;
-      color: #777;
-      font-size: 0.9rem;
+      padding: 1.8rem 1rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 600px) {
+      .hero-wrap {
+        padding-inline: 1rem;
+      }
+      .page-main {
+        padding-inline: 1rem;
+      }
+      .card {
+        padding: 1.3rem 1rem;
+      }
+      .hero-side-card {
+        display: none; /* hide side card on very small screens for simplicity */
+      }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>🐱🐶 PawScan AI</h1>
-  <p>AI-powered triage for your pets — educational only, not a diagnosis.</p>
-</header>
-
-<main>
-  <h2>Run a Scan</h2>
-  <form id="scan-form">
-    <label for="pet-name">Pet Name:</label>
-    <input type="text" id="pet-name" placeholder="E.g. Bella" />
-
-    <label for="scan-type">Scan Type:</label>
-    <select id="scan-type" required>
-      <option value="coat">Coat / Skin</option>
-      <option value="gait">Gait</option>
-      <option value="breathing">Breathing</option>
-      <option value="hydration">Hydration</option>
-      <option value="poop">Stool / Poop</option>
-    </select>
-
-    <label>Common concerns:</label>
-    <div class="concerns">
-      <label><input type="checkbox" value="Limping / trouble walking"> Limping</label>
-      <label><input type="checkbox" value="Not eating / reduced appetite"> Not eating</label>
-      <label><input type="checkbox" value="Vomiting"> Vomiting</label>
-      <label><input type="checkbox" value="Diarrhea"> Diarrhea</label>
-      <label><input type="checkbox" value="Lethargy / low energy"> Lethargy</label>
-      <label><input type="checkbox" value="Coughing or sneezing"> Sneezing</label>
-      <label><input type="checkbox" value="Breathing seems harder"> Breathing issues</label>
-      <label><input type="checkbox" value="Skin redness / itching"> Skin issues</label>
-      <label><input type="checkbox" value="Eye discharge / redness"> Eye redness</label>
+<!-- Top nav -->
+<div class="nav">
+  <div class="nav-left">
+    <div class="logo-mark">🐾</div>
+    <div>
+      <div class="logo-text">PawScan AI</div>
+      <div class="chip">
+        <span>Beta</span>
+        <span>Not a diagnosis</span>
+      </div>
     </div>
+  </div>
+  <div class="nav-right">
+    <a href="#run-scan">Run a scan</a>
+    <a href="#info">How it works</a>
+    <a href="#info">Safety</a>
+  </div>
+</div>
 
-    <label for="notes">Additional notes:</label>
-    <textarea id="notes" placeholder="Describe what's going on"></textarea>
-
-    <label for="photo">Upload Photo (required):</label>
-    <input type="file" id="photo" accept="image/*" required>
-    <img id="preview" class="image-preview" style="display:none;" />
-
-    <p class="note-msg">Your photo and notes are securely analyzed by our AI for early signs.</p>
-
-    <button type="submit">🔍 Run AI Scan</button>
-  </form>
-
-  <div id="status"></div>
-  <div id="result" class="result"></div>
-
-  <div id="history" class="history-panel">
-    <h2>Recent Scans</h2>
-    <div id="history-entries"></div>
+<!-- Hero -->
+<section class="hero-wrap">
+  <div class="hero-main">
+    <div class="hero-eyebrow">For pet parents</div>
+    <h1 class="hero-title">Quick, AI-powered triage for your dog or cat.</h1>
+    <p class="hero-subtitle">
+      Upload a photo, tell us what you’re seeing, and get a clear, plain-language summary
+      you can use to decide what to do next — or to explain things to your vet.
+    </p>
+    <ul class="hero-bullets">
+      <li><span class="icon">✅</span><span>Looks for patterns in your notes and photo (e.g., skin, gait, breathing, stool).</span></li>
+      <li><span class="icon">✅</span><span>Returns a simple “Looks OK / Monitor / Needs Attention” style status.</span></li>
+      <li><span class="icon">✅</span><span>Always reminds you this is <strong>not</strong> a diagnosis or replacement for a vet.</span></li>
+    </ul>
+    <div class="hero-cta-row">
+      <button type="button" class="hero-cta-btn" onclick="document.getElementById('scan-form').scrollIntoView({behavior:'smooth'});">
+        <span class="icon">🔍</span> Run a free scan
+      </button>
+      <span class="hero-caption">No account, just a photo & a few details.</span>
+    </div>
   </div>
 
-  <h2>About PawScan AI</h2>
-  <p>This is an educational tool to help pet parents think through what they're seeing at home. It’s not a diagnosis or replacement for veterinary care.</p>
-  <p><strong>Emergency?</strong> If your pet is in distress, contact a veterinarian or emergency clinic immediately.</p>
-</main>
+  <aside class="hero-side-card">
+    <div class="hero-side-title">What PawScan AI does</div>
+    <p style="margin:0 0 0.5rem; color:var(--text-muted);">
+      Think of this like a triage assistant that helps you organize your thoughts before you talk to a real vet.
+    </p>
+    <div class="hero-side-row">
+      <span class="hero-pill">✨ Summarizes your notes</span>
+    </div>
+    <div class="hero-side-row">
+      <span class="hero-pill">📷 Considers your pet’s photo</span>
+    </div>
+    <div class="hero-side-row">
+      <span class="hero-pill">⚠️ Flags “monitor vs. attention”</span>
+    </div>
+    <p style="margin-top:0.7rem;font-size:0.8rem;color:var(--text-muted);">
+      Always follow the advice of a licensed veterinarian over anything you see here. This is for education only.
+    </p>
+  </aside>
+</section>
 
-<footer>&copy; 2025 PawScan AI. All rights reserved.</footer>
+<!-- Main content -->
+<div class="page-main" id="run-scan">
+  <div class="card-grid">
+    <!-- Scan card -->
+    <section class="card">
+      <h2>Run a scan</h2>
+      <p class="card-subtitle">Fill in a few details, upload a photo, and PawScan AI will return an easy-to-read summary.</p>
+
+      <form id="scan-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pet-name">Pet name</label>
+            <input type="text" id="pet-name" placeholder="E.g. Bella" />
+          </div>
+          <div class="form-group">
+            <label for="scan-type">Scan type</label>
+            <select id="scan-type" required>
+              <option value="coat">Coat / Skin</option>
+              <option value="gait">Gait</option>
+              <option value="breathing">Breathing</option>
+              <option value="hydration">Hydration</option>
+              <option value="poop">Stool / Poop</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:0.5rem;">
+          <label>Common concerns</label>
+          <div class="concerns">
+            <label><input type="checkbox" value="Limping / trouble walking"> Limping</label>
+            <label><input type="checkbox" value="Not eating / reduced appetite"> Not eating</label>
+            <label><input type="checkbox" value="Vomiting"> Vomiting</label>
+            <label><input type="checkbox" value="Diarrhea"> Diarrhea</label>
+            <label><input type="checkbox" value="Lethargy / low energy"> Lethargy</label>
+            <label><input type="checkbox" value="Coughing or sneezing"> Sneezing</label>
+            <label><input type="checkbox" value="Breathing seems harder"> Breathing issues</label>
+            <label><input type="checkbox" value="Skin redness / itching"> Skin issues</label>
+            <label><input type="checkbox" value="Eye discharge / redness"> Eye redness</label>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:0.7rem;">
+          <label for="notes">Additional notes</label>
+          <textarea id="notes" placeholder="Describe what's going on, when it started, and anything you've tried."></textarea>
+        </div>
+
+        <div class="form-group" style="margin-top:0.7rem;">
+          <label for="photo">Upload photo (required)</label>
+          <input type="file" id="photo" accept="image/*" required>
+          <img id="preview" class="image-preview" />
+          <p class="note-msg">
+            We send a compressed copy of this photo with your notes to the PawScan backend to generate your report.
+          </p>
+        </div>
+
+        <button type="submit" class="btn-primary">
+          <span class="icon">🤖</span>
+          <span>Run AI scan</span>
+        </button>
+      </form>
+
+      <div id="status"></div>
+      <div id="result" class="result"></div>
+    </section>
+
+    <!-- History / Info card -->
+    <aside class="card history-panel" id="info">
+      <h3>Recent scans on this device</h3>
+      <div id="history-entries"></div>
+      <hr style="margin:1.2rem 0;border:none;border-top:1px solid #e5e7eb;"/>
+      <h3>How to use PawScan AI safely</h3>
+      <ul class="info-list">
+        <li><strong>Educational only:</strong> This is not a vet and not a diagnosis.</li>
+        <li><strong>Great for “gut check” questions:</strong> “Does this sound urgent?” or “How do I explain this to my vet?”</li>
+        <li><strong>When in doubt, call a vet:</strong> Especially for breathing issues, collapse, severe pain, or fast changes.</li>
+        <li><strong>Privacy-aware:</strong> We don’t use your scans for advertising across other sites or apps.</li>
+      </ul>
+    </aside>
+  </div>
+</div>
+
+<footer>
+  © 2025 PawScan AI. Educational-only tool, not a substitute for in-person veterinary care.
+</footer>
 
 <script>
-  // --- crypto.randomUUID polyfill for older iOS Safari ---
+  // --- crypto.randomUUID polyfill for older Safari / iOS ---
   (function () {
     if (window.crypto && typeof window.crypto.randomUUID === "function") {
       return;
@@ -287,6 +672,14 @@
     const history = JSON.parse(localStorage.getItem('scan_history') || '[]');
     const container = document.getElementById('history-entries');
     container.innerHTML = '';
+    if (history.length === 0) {
+      const p = document.createElement('p');
+      p.textContent = "No scans yet. Your last 10 scans on this device will show up here.";
+      p.style.fontSize = "0.85rem";
+      p.style.color = "#6b7280";
+      container.appendChild(p);
+      return;
+    }
     history.forEach(entry => {
       const div = document.createElement('div');
       div.className = 'history-entry';
@@ -352,7 +745,7 @@
             body: JSON.stringify({
               user_id: userId,
               pet_id: petId,
-              species: "Unknown",          // 👈 added back so backend Pydantic model is satisfied
+              species: "Unknown",   // required by backend model
               notes: combinedNotes,
               image_base64: imageBase64,
               image_url: "",
@@ -368,7 +761,7 @@
         const data = await resp.json();
         showResult(data);
       } catch (err) {
-        statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
+        statusEl.innerHTML = '<span style="color:#e11d48;">Error: ' + err.message + '</span>';
       }
     };
 
@@ -380,29 +773,30 @@
     const scanType = document.getElementById('scan-type').value;
 
     const statusMap = {
-      normal:          { label: 'Looks OK',        color: 'green'  },
-      needs_attention: { label: 'Needs Attention', color: 'red'    },
-      monitor:         { label: 'Monitor',         color: 'orange' }
+      normal:          { label: 'Looks OK',        color: 'green',   pillClass: 'pill-status pill-status--ok' },
+      needs_attention: { label: 'Needs Attention', color: '#e11d48', pillClass: 'pill-status pill-status--attention' },
+      monitor:         { label: 'Monitor',         color: '#d97706', pillClass: 'pill-status pill-status--monitor' }
     };
 
     const status = statusMap[data.overall_status] || statusMap.monitor;
 
     resultDiv.innerHTML = `
-      <p><strong>Status for ${petName || 'your pet'}:</strong>
-         <span style="color:${status.color};">${status.label}</span>
+      <p>
+        <span class="${status.pillClass}">Status: ${status.label}</span>
       </p>
+      <p><strong>For ${petName || 'your pet'} (${scanType}):</strong></p>
       <p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>
       <p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>
       ${
         Array.isArray(data.possible_conditions) && data.possible_conditions.length
-          ? '<p><strong>Possible conditions:</strong><ul>' +
+          ? '<p><strong>Possible conditions (not a diagnosis):</strong><ul>' +
             data.possible_conditions.map(c => `<li>${c}</li>`).join('') +
             '</ul></p>'
           : ''
       }
       ${
         data.disclaimer
-          ? `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>`
+          ? `<p style="font-size:0.8rem;color:#6b7280;">${data.disclaimer}</p>`
           : ''
       }
     `;
