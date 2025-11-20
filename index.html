@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PawScan AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter&display=swap" rel="stylesheet"/>
+
   <style>
     :root {
       --primary: #0a5c75;
@@ -12,14 +14,6 @@
       --highlight: #ff9f43;
       --text-dark: #2c3e50;
       --background: #f9fafa;
-    }
-
-    body.dark {
-      --primary: #0a5c75;
-      --secondary: #182430;
-      --highlight: #ff9f43;
-      --text-dark: #ecf0f1;
-      --background: #0e141b;
     }
 
     body {
@@ -30,35 +24,20 @@
     }
 
     header {
-      position: relative;
       background: linear-gradient(135deg, var(--primary), #0e748f);
-      color: #fdfdfd;
+      color: white;
       text-align: center;
       padding: 2rem 1rem;
       border-bottom: 5px solid var(--highlight);
-      background-image:
+      background-image: 
         linear-gradient(rgba(10, 92, 117, 0.85), rgba(14, 116, 143, 0.85)),
         url('/mnt/data/8E2D3092-7248-4DEC-8502-641E0070CD24.jpeg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
     }
 
     header * {
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-    }
-
-    .toggle-dark {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: var(--highlight);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 5px;
-      cursor: pointer;
     }
 
     main {
@@ -68,10 +47,6 @@
       background-color: #fff;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(0,0,0,0.08);
-    }
-
-    body.dark main {
-      background-color: var(--secondary);
     }
 
     h1, h2 {
@@ -191,28 +166,9 @@
       color: #777;
       font-size: 0.9rem;
     }
-
-    @media (max-width: 600px) {
-      main {
-        margin: 1rem;
-        padding: 1.2rem;
-      }
-
-      button {
-        width: 100%;
-      }
-
-      .toggle-dark {
-        top: 10px;
-        right: 10px;
-        padding: 0.4rem 0.8rem;
-      }
-    }
   </style>
 </head>
 <body>
-
-<button class="toggle-dark" onclick="toggleDarkMode()">🌙 Dark Mode</button>
 
 <header>
   <h1>🐱🐶 PawScan AI</h1>
@@ -279,15 +235,6 @@
   const preview = document.getElementById('preview');
   const statusEl = document.getElementById('status');
   const resultDiv = document.getElementById('result');
-
-  function toggleDarkMode() {
-    document.body.classList.toggle('dark');
-    localStorage.setItem('dark_mode', document.body.classList.contains('dark') ? '1' : '0');
-  }
-
-  if (localStorage.getItem('dark_mode') === '1') {
-    document.body.classList.add('dark');
-  }
 
   photoInput.addEventListener('change', () => {
     const file = photoInput.files[0];
