@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PawScan AI</title>
-
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet"/>
 
   <style>
@@ -221,114 +220,116 @@
 <footer>&copy; 2025 PawScan AI. All rights reserved.</footer>
 
 <script>
-  async function toBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result.split(',')[1]);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  document.getElementById('scan-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const scanType = document.getElementById('scan-type').value;
-    const notes = document.getElementById('notes').value.trim();
-    const fileInput = document.getElementById('photo');
-    const catIcon = document.getElementById('cat-icon');
-
-    if (!fileInput.files.length) {
-      alert('Please upload a photo.');
-      return;
+  document.addEventListener('DOMContentLoaded', () => {
+    async function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
     }
 
-    const file = fileInput.files[0];
-    const imageBase64 = await toBase64(file);
+    document.getElementById('scan-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-    const concerns = Array.from(
-      document.querySelectorAll('.concerns input:checked')
-    ).map(c => c.value);
+      const scanType = document.getElementById('scan-type').value;
+      const notes = document.getElementById('notes').value.trim();
+      const fileInput = document.getElementById('photo');
+      const catIcon = document.getElementById('cat-icon');
 
-    const combinedNotes = concerns.length
-      ? ('Common concerns: ' + concerns.join(', ') +
-         (notes ? '. Additional notes: ' + notes : ''))
-      : notes;
+      if (!fileInput.files.length) {
+        alert('Please upload a photo.');
+        return;
+      }
 
-    const existingUserId = localStorage.getItem('pawscan_user_id');
-    let userId = existingUserId || crypto.randomUUID();
-    if (!existingUserId) localStorage.setItem('pawscan_user_id', userId);
+      const file = fileInput.files[0];
+      const imageBase64 = await toBase64(file);
 
-    const petId = crypto.randomUUID();
-    const statusEl = document.getElementById('status');
-    const resultDiv = document.getElementById('result');
-    statusEl.style.color = '';
-    statusEl.textContent = 'Uploading and analyzing...';
-    resultDiv.style.display = 'none';
-    catIcon.classList.add('spin');
+      const concerns = Array.from(
+        document.querySelectorAll('.concerns input:checked')
+      ).map(c => c.value);
 
-    const payload = {
-      user_id: userId,
-      pet_id: petId,
-      species: '',
-      notes: combinedNotes,
-      image_url: '',
-      image_base64: imageBase64,
-      scan_type: scanType
-    };
+      const combinedNotes = concerns.length
+        ? ('Common concerns: ' + concerns.join(', ') +
+           (notes ? '. Additional notes: ' + notes : ''))
+        : notes;
 
-    try {
-      const resp = await fetch(`https://petscan-backend.onrender.com/webapi/v1/analyze/${scanType}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      const existingUserId = localStorage.getItem('pawscan_user_id');
+      let userId = existingUserId || crypto.randomUUID();
+      if (!existingUserId) localStorage.setItem('pawscan_user_id', userId);
 
-      if (!resp.ok) throw new Error('Server error: ' + resp.status);
-      const data = await resp.json();
-      catIcon.classList.remove('spin');
-      showResult(data);
-    } catch (err) {
-      catIcon.classList.remove('spin');
+      const petId = crypto.randomUUID();
+      const statusEl = document.getElementById('status');
+      const resultDiv = document.getElementById('result');
+      statusEl.style.color = '';
+      statusEl.textContent = 'Uploading and analyzing...';
       resultDiv.style.display = 'none';
-      statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
+      catIcon.classList.add('spin');
+
+      const payload = {
+        user_id: userId,
+        pet_id: petId,
+        species: '',
+        notes: combinedNotes,
+        image_url: '',
+        image_base64: imageBase64,
+        scan_type: scanType
+      };
+
+      try {
+        const resp = await fetch(`https://petscan-backend.onrender.com/webapi/v1/analyze/${scanType}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!resp.ok) throw new Error('Server error: ' + resp.status);
+        const data = await resp.json();
+        catIcon.classList.remove('spin');
+        showResult(data);
+      } catch (err) {
+        catIcon.classList.remove('spin');
+        resultDiv.style.display = 'none';
+        statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
+      }
+    });
+
+    function showResult(data) {
+      const resultDiv = document.getElementById('result');
+      const statusEl = document.getElementById('status');
+
+      let statusText = 'Monitor';
+      let colorStyle = 'color:orange;';
+      if (data.overall_status === 'normal') {
+        statusText = 'Looks OK';
+        colorStyle = 'color:green;';
+      } else if (data.overall_status === 'needs_attention') {
+        statusText = 'Needs Attention';
+        colorStyle = 'color:red;';
+      }
+
+      statusEl.textContent = '';
+      let html = `<p><strong>Status:</strong> <span style="${colorStyle}">${statusText}</span></p>`;
+      html += `<p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>`;
+      html += `<p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>`;
+
+      if (Array.isArray(data.possible_conditions) && data.possible_conditions.length) {
+        html += '<p><strong>Possible conditions (not a diagnosis):</strong></p><ul>';
+        data.possible_conditions.forEach(c => {
+          html += `<li>${c}</li>`;
+        });
+        html += '</ul>';
+      }
+
+      if (data.disclaimer) {
+        html += `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>`;
+      }
+
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = html;
     }
   });
-
-  function showResult(data) {
-    const resultDiv = document.getElementById('result');
-    const statusEl = document.getElementById('status');
-
-    let statusText = 'Monitor';
-    let colorStyle = 'color:orange;';
-    if (data.overall_status === 'normal') {
-      statusText = 'Looks OK';
-      colorStyle = 'color:green;';
-    } else if (data.overall_status === 'needs_attention') {
-      statusText = 'Needs Attention';
-      colorStyle = 'color:red;';
-    }
-
-    statusEl.textContent = '';
-    let html = `<p><strong>Status:</strong> <span style="${colorStyle}">${statusText}</span></p>`;
-    html += `<p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>`;
-    html += `<p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>`;
-
-    if (Array.isArray(data.possible_conditions) && data.possible_conditions.length) {
-      html += '<p><strong>Possible conditions (not a diagnosis):</strong></p><ul>';
-      data.possible_conditions.forEach(c => {
-        html += `<li>${c}</li>`;
-      });
-      html += '</ul>';
-    }
-
-    if (data.disclaimer) {
-      html += `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>`;
-    }
-
-    resultDiv.style.display = 'block';
-    resultDiv.innerHTML = html;
-  }
 </script>
 
 </body>
