@@ -82,16 +82,6 @@
       background-color: var(--secondary);
     }
 
-    h1, h2 {
-      margin-top: 0;
-    }
-
-    h2 {
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 0.3rem;
-      margin-bottom: 1.5rem;
-    }
-
     label {
       display: block;
       margin-top: 1rem;
@@ -107,24 +97,17 @@
       transition: border-color 0.2s;
     }
 
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--primary);
-      outline: none;
-    }
-
-    .concerns {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+    .note-msg {
+      font-size: 0.9rem;
+      color: #777;
       margin-top: 0.5rem;
     }
 
-    .concerns label {
-      background-color: var(--secondary);
-      padding: 0.4rem 0.6rem;
-      border-radius: 4px;
-      font-size: 0.9rem;
-      cursor: pointer;
+    .image-preview {
+      margin-top: 1rem;
+      max-height: 200px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
 
     button {
@@ -137,96 +120,29 @@
       font-weight: 600;
       font-size: 1rem;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease, background 0.3s ease;
     }
 
-    button:hover {
-      background: #ff8f1a;
-      transform: translateY(-2px);
-    }
-
-    .note-msg {
-      font-size: 0.9rem;
-      color: #777;
-      margin-top: 0.5rem;
-    }
-
-    .result {
-      margin-top: 2rem;
-      padding: 1.2rem;
-      border-left: 6px solid var(--primary);
-      background-color: var(--secondary);
-      border-radius: 8px;
+    #result {
       display: none;
-    }
-
-    .image-preview {
-      margin-top: 1rem;
-      max-height: 200px;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-
-    #status {
-      font-size: 1rem;
-      margin-top: 1rem;
-    }
-
-    .history-panel {
       margin-top: 2rem;
-      background-color: var(--secondary);
       padding: 1rem;
       border-radius: 8px;
-      box-shadow: 0 0 4px rgba(0,0,0,0.1);
-    }
-
-    .history-entry {
-      margin-bottom: 1rem;
-      border-left: 3px solid var(--primary);
-      padding-left: 1rem;
-      cursor: pointer;
-    }
-
-    .history-entry:hover {
-      background-color: rgba(0, 0, 0, 0.03);
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 3rem;
-      padding: 1rem 0;
-      color: #777;
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 600px) {
-      main {
-        margin: 1rem;
-        padding: 1.2rem;
-      }
-
-      button {
-        width: 100%;
-      }
+      background-color: var(--secondary);
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>🐱🐶 PawScan AI</h1>
-  <p>AI-powered triage for your pets — educational only, not a diagnosis.</p>
+  <h1>PawScan AI</h1>
+  <p>AI-powered triage for pets. Not a diagnosis.</p>
   <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
 </header>
 
 <main>
-  <h2>Run a Scan</h2>
   <form id="scan-form">
-    <label for="pet-name">Pet Name:</label>
-    <input type="text" id="pet-name" placeholder="E.g. Bella" />
-
-    <label for="scan-type">Scan Type:</label>
+    <label for="scan-type">Scan Type</label>
     <select id="scan-type" required>
       <option value="coat">Coat / Skin</option>
       <option value="gait">Gait</option>
@@ -235,51 +151,25 @@
       <option value="poop">Stool / Poop</option>
     </select>
 
-    <label>Common concerns:</label>
-    <div class="concerns">
-      <label><input type="checkbox" value="Limping / trouble walking"> Limping</label>
-      <label><input type="checkbox" value="Not eating / reduced appetite"> Not eating</label>
-      <label><input type="checkbox" value="Vomiting"> Vomiting</label>
-      <label><input type="checkbox" value="Diarrhea"> Diarrhea</label>
-      <label><input type="checkbox" value="Lethargy / low energy"> Lethargy</label>
-      <label><input type="checkbox" value="Coughing or sneezing"> Sneezing</label>
-      <label><input type="checkbox" value="Breathing seems harder"> Breathing issues</label>
-      <label><input type="checkbox" value="Skin redness / itching"> Skin issues</label>
-      <label><input type="checkbox" value="Eye discharge / redness"> Eye redness</label>
-    </div>
+    <label for="notes">Notes</label>
+    <textarea id="notes" placeholder="Describe your concern"></textarea>
 
-    <label for="notes">Additional notes:</label>
-    <textarea id="notes" placeholder="Describe what's going on"></textarea>
-
-    <label for="photo">Upload Photo (required):</label>
-    <input type="file" id="photo" accept="image/*" required>
+    <label for="photo">Upload Photo (required)</label>
+    <input type="file" id="photo" accept="image/*" capture="environment" required />
     <img id="preview" class="image-preview" style="display:none;" />
 
-    <p class="note-msg">Your photo and notes are securely analyzed by our AI for early signs.</p>
+    <p class="note-msg">iPhone Users: If upload fails, try selecting photo from your Camera Roll or Files app.</p>
 
-    <button type="submit">🔍 Run AI Scan</button>
+    <button type="submit">Run AI Scan</button>
   </form>
 
-  <div id="status"></div>
-  <div id="result" class="result"></div>
-
-  <div id="history" class="history-panel">
-    <h2>Recent Scans</h2>
-    <div id="history-entries"></div>
-  </div>
-
-  <h2>About PawScan AI</h2>
-  <p>This is an educational tool to help pet parents think through what they're seeing at home. It’s not a diagnosis or replacement for veterinary care.</p>
-  <p><strong>Emergency?</strong> If your pet is in distress, contact a veterinarian or emergency clinic immediately.</p>
+  <p id="status"></p>
+  <div id="result"></div>
 </main>
 
-<footer>&copy; 2025 PawScan AI. All rights reserved.</footer>
-
 <script>
-  const photoInput = document.getElementById('photo');
   const preview = document.getElementById('preview');
-  const statusEl = document.getElementById('status');
-  const resultDiv = document.getElementById('result');
+  const fileInput = document.getElementById('photo');
 
   function toggleDarkMode() {
     document.body.classList.toggle('dark');
@@ -290,8 +180,8 @@
     document.body.classList.add('dark');
   }
 
-  photoInput.addEventListener('change', () => {
-    const file = photoInput.files[0];
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = e => {
@@ -299,95 +189,68 @@
         preview.style.display = 'block';
       };
       reader.readAsDataURL(file);
-    } else {
-      preview.style.display = 'none';
-      preview.src = '';
     }
   });
 
-  function saveScanToHistory(data, petName, scanType) {
-    const history = JSON.parse(localStorage.getItem('scan_history') || '[]');
-    history.unshift({
-      timestamp: new Date().toLocaleString(),
-      petName: petName || 'Unnamed',
-      scanType,
-      status: data.overall_status,
-      summary: data.summary_text,
-      recommendation: data.recommendation_text
-    });
-    localStorage.setItem('scan_history', JSON.stringify(history.slice(0, 10)));
-    renderHistory();
-  }
-
-  function renderHistory() {
-    const history = JSON.parse(localStorage.getItem('scan_history') || '[]');
-    const container = document.getElementById('history-entries');
-    container.innerHTML = '';
-    history.forEach(entry => {
-      const div = document.createElement('div');
-      div.className = 'history-entry';
-      div.innerHTML = `
-        <strong>${entry.petName}</strong> (${entry.scanType})<br>
-        <em>${entry.timestamp}</em><br>
-        <span>Status: <strong>${entry.status}</strong></span><br>
-        <details>
-          <summary>Summary</summary>
-          <p>${entry.summary}</p>
-          <p><strong>Recommendation:</strong> ${entry.recommendation}</p>
-        </details>
-      `;
-      container.appendChild(div);
-    });
-  }
-
-  renderHistory();
-
-  document.getElementById('scan-form').addEventListener('submit', async function(e) {
+  document.getElementById('scan-form').addEventListener('submit', async e => {
     e.preventDefault();
 
     const scanType = document.getElementById('scan-type').value;
     const notes = document.getElementById('notes').value.trim();
-    const petName = document.getElementById('pet-name').value.trim();
-    const file = photoInput.files[0];
+    const file = fileInput.files[0];
 
     if (!file) {
       alert('Please upload a photo.');
       return;
     }
 
-    const concerns = Array.from(document.querySelectorAll('.concerns input:checked')).map(c => c.value);
-    const combinedNotes = concerns.length
-      ? 'Common concerns: ' + concerns.join(', ') + (notes ? '. Notes: ' + notes : '')
-      : notes;
-
     const reader = new FileReader();
     reader.onload = async () => {
       const imageBase64 = reader.result.split(',')[1];
       const userId = localStorage.getItem('pawscan_user_id') || crypto.randomUUID();
-      if (!localStorage.getItem('pawscan_user_id')) {
-        localStorage.setItem('pawscan_user_id', userId);
-      }
+      localStorage.setItem('pawscan_user_id', userId);
       const petId = crypto.randomUUID();
 
-      statusEl.textContent = 'Analyzing...';
+      const payload = {
+        user_id: userId,
+        pet_id: petId,
+        notes,
+        image_url: '',
+        image_base64,
+        scan_type: scanType
+      };
+
+      const statusEl = document.getElementById('status');
+      const resultDiv = document.getElementById('result');
+      statusEl.textContent = 'Uploading and analyzing...';
       resultDiv.style.display = 'none';
 
       try {
         const resp = await fetch(`https://petscan-backend.onrender.com/webapi/v1/analyze/${scanType}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            user_id: userId,
-            pet_id: petId,
-            notes: combinedNotes,
-            image_base64: imageBase64,
-            image_url: '',
-            scan_type: scanType
-          })
+          body: JSON.stringify(payload)
         });
 
+        if (!resp.ok) throw new Error('Server error: ' + resp.status);
         const data = await resp.json();
-        showResult(data);
+
+        let statusText = 'Monitor';
+        let color = 'orange';
+        if (data.overall_status === 'normal') {
+          statusText = 'Looks OK'; color = 'green';
+        } else if (data.overall_status === 'needs_attention') {
+          statusText = 'Needs Attention'; color = 'red';
+        }
+
+        resultDiv.innerHTML = `
+          <p><strong>Status:</strong> <span style="color:${color};">${statusText}</span></p>
+          <p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>
+          <p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>
+        `;
+
+        resultDiv.style.display = 'block';
+        statusEl.textContent = '';
       } catch (err) {
         statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
       }
@@ -395,37 +258,6 @@
 
     reader.readAsDataURL(file);
   });
-
-  function showResult(data) {
-    const resultDiv = document.getElementById('result');
-    const statusEl = document.getElementById('status');
-    const petName = document.getElementById('pet-name').value.trim();
-    const scanType = document.getElementById('scan-type').value;
-
-    const statusMap = {
-      normal: { label: 'Looks OK', color: 'green' },
-      needs_attention: { label: 'Needs Attention', color: 'red' },
-      monitor: { label: 'Monitor', color: 'orange' }
-    };
-
-    const status = statusMap[data.overall_status] || statusMap.monitor;
-
-    resultDiv.innerHTML = `
-      <p><strong>Status for ${petName || 'your pet'}:</strong> <span style="color:${status.color};">${status.label}</span></p>
-      <p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>
-      <p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>
-      ${Array.isArray(data.possible_conditions) && data.possible_conditions.length
-        ? '<p><strong>Possible conditions:</strong><ul>' + data.possible_conditions.map(c => `<li>${c}</li>`).join('') + '</ul></p>'
-        : ''
-      }
-      ${data.disclaimer ? `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>` : ''}
-    `;
-
-    resultDiv.style.display = 'block';
-    statusEl.textContent = '';
-
-    saveScanToHistory(data, petName, scanType);
-  }
 </script>
 
 </body>
