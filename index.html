@@ -1,29 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PetScan AI</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap" rel="stylesheet"/>
+
   <style>
-    body { font-family: Arial, sans-serif; margin:0; background-color:#f7f7f7; }
-    header { background-color: #0a5c75; color:#fff; padding: 1rem; text-align:center; }
-    main { max-width: 800px; margin: 2rem auto; padding: 1rem; background-color:#fff; border-radius:8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h1, h2 { margin-top:0; }
-    label { display:block; margin-top:1rem; }
-    select, textarea, input[type=file] { width:100%; padding: 0.5rem; margin-top:0.25rem; }
-    .concerns { display:flex; flex-wrap: wrap; gap: 0.5rem; margin-top:0.5rem; }
-    .concerns label { display: flex; align-items:center; gap:0.25rem; font-size: 0.9rem; }
-    button { margin-top:1rem; padding: 0.5rem 1rem; background-color:#0a5c75; color:white; border:none; border-radius:4px; cursor:pointer; }
-    .result { margin-top:2rem; padding:1rem; border-radius:8px; background-color:#f0f4f5; border:1px solid #ccc; display:none; }
-    footer { text-align:center; margin-top:2rem; padding:1rem 0; color:#777; }
+    :root {
+      --primary: #0a5c75;
+      --secondary: #f0f4f5;
+      --highlight: #ff9f43;
+      --text-dark: #2c3e50;
+      --background: #f9fafa;
+    }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      margin: 0;
+      background-color: var(--background);
+      color: var(--text-dark);
+    }
+
+    header {
+      background-color: var(--primary);
+      color: #fff;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    header img {
+      height: 60px;
+      margin-bottom: 0.5rem;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.08);
+    }
+
+    h1, h2 {
+      margin-top: 0;
+    }
+
+    h2 {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 0.3rem;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    select, textarea, input[type=file] {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.4rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    .concerns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .concerns label {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.9rem;
+      background-color: var(--secondary);
+      padding: 0.4rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.4rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #08708a;
+    }
+
+    .note-msg {
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 0.5rem;
+    }
+
+    .result {
+      margin-top: 2rem;
+      padding: 1.2rem;
+      border-radius: 8px;
+      background-color: var(--secondary);
+      border: 1px solid #ccc;
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1rem 0;
+      color: #777;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        margin: 1rem;
+        padding: 1.2rem;
+      }
+      button {
+        width: 100%;
+      }
+    }
   </style>
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7320834425782527" crossorigin="anonymous"></script>
 </head>
 <body>
+
 <header>
+  <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Pet icon" />
   <h1>PetScan AI</h1>
   <p>AI-powered triage for your pets (not a diagnosis).</p>
 </header>
+
 <main>
   <h2>Run a Scan</h2>
   <form id="scan-form">
@@ -55,6 +183,8 @@
     <label for="photo">Photo (required):</label>
     <input type="file" id="photo" accept="image/*" required>
 
+    <p class="note-msg">Your photo and notes are securely analyzed by our AI for early signs. We care about your pet’s safety 💖</p>
+
     <button type="submit">Run AI Scan</button>
   </form>
 
@@ -66,16 +196,14 @@
   <p><strong>What PetScan AI is not:</strong> It is not a veterinarian, does not provide a diagnosis, and does not replace an in-person exam.</p>
   <p><strong>Emergency situations:</strong> If your pet is in distress, contact a veterinarian or emergency clinic immediately.</p>
 </main>
+
 <footer>&copy; 2025 PetScan AI. All rights reserved.</footer>
 
 <script>
   async function toBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => {
-        const b64 = reader.result.split(',')[1];
-        resolve(b64);
-      };
+      reader.onload = () => resolve(reader.result.split(',')[1]);
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
@@ -96,7 +224,6 @@
     const file = fileInput.files[0];
     const imageBase64 = await toBase64(file);
 
-    // gather selected concerns
     const concerns = Array.from(
       document.querySelectorAll('.concerns input:checked')
     ).map(c => c.value);
@@ -106,16 +233,11 @@
          (notes ? '. Additional notes: ' + notes : ''))
       : notes;
 
-    // generate / reuse random user_id for web
     const existingUserId = localStorage.getItem('petscan_user_id');
-    let userId = existingUserId;
-    if (!existingUserId) {
-      userId = crypto.randomUUID();
-      localStorage.setItem('petscan_user_id', userId);
-    }
-    const petId = crypto.randomUUID();
+    let userId = existingUserId || crypto.randomUUID();
+    if (!existingUserId) localStorage.setItem('petscan_user_id', userId);
 
-    // update status UI
+    const petId = crypto.randomUUID();
     const statusEl = document.getElementById('status');
     const resultDiv = document.getElementById('result');
     statusEl.style.color = '';
@@ -132,24 +254,17 @@
       scan_type: scanType
     };
 
-    const endpoint = `https://petscan-backend.onrender.com/webapi/v1/analyze/${scanType}`;
-
     try {
-      const resp = await fetch(endpoint, {
+      const resp = await fetch(`https://petscan-backend.onrender.com/webapi/v1/analyze/${scanType}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
-      if (!resp.ok) {
-        throw new Error('Server error: ' + resp.status);
-      }
-
+      if (!resp.ok) throw new Error('Server error: ' + resp.status);
       const data = await resp.json();
       showResult(data);
     } catch (err) {
-      const resultDiv = document.getElementById('result');
-      const statusEl = document.getElementById('status');
       resultDiv.style.display = 'none';
       statusEl.innerHTML = '<span style="color:red;">Error: ' + err.message + '</span>';
     }
@@ -161,7 +276,6 @@
 
     let statusText = 'Monitor';
     let colorStyle = 'color:orange;';
-
     if (data.overall_status === 'normal') {
       statusText = 'Looks OK';
       colorStyle = 'color:green;';
@@ -170,30 +284,27 @@
       colorStyle = 'color:red;';
     }
 
-    // clear the "uploading" text
     statusEl.textContent = '';
-
-    let html = '<p><strong>Status:</strong> <span style="' + colorStyle + '">' + statusText + '</span></p>';
-    html += '<p><strong>Summary:</strong> ' +
-            (data.summary_text || 'No summary provided.') + '</p>';
-    html += '<p><strong>Recommendation:</strong> ' +
-            (data.recommendation_text || 'No recommendation provided.') + '</p>';
+    let html = `<p><strong>Status:</strong> <span style="${colorStyle}">${statusText}</span></p>`;
+    html += `<p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>`;
+    html += `<p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>`;
 
     if (Array.isArray(data.possible_conditions) && data.possible_conditions.length) {
       html += '<p><strong>Possible conditions (not a diagnosis):</strong></p><ul>';
       data.possible_conditions.forEach(c => {
-        html += '<li>' + c + '</li>';
+        html += `<li>${c}</li>`;
       });
       html += '</ul>';
     }
 
     if (data.disclaimer) {
-      html += '<p style="font-size:smaller;color:#555;">' + data.disclaimer + '</p>';
+      html += `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>`;
     }
 
     resultDiv.style.display = 'block';
     resultDiv.innerHTML = html;
   }
 </script>
+
 </body>
 </html>
