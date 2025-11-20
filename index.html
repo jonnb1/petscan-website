@@ -7,6 +7,9 @@
   <title>PawScan AI – Pet Triage Assistant</title>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 
+  <!-- AdSense auto-ads (only does anything once approved in AdSense UI) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7320834425782527" crossorigin="anonymous"></script>
+
   <style>
     :root {
       --primary: #0a5c75;
@@ -77,6 +80,15 @@
       gap: 1rem;
       font-size: 0.9rem;
       color: var(--text-muted);
+    }
+
+    .nav-right a {
+      padding: 0.2rem 0.3rem;
+      border-radius: 999px;
+    }
+
+    .nav-right a:hover {
+      background: rgba(255,255,255,0.6);
     }
 
     .chip {
@@ -278,10 +290,7 @@
       font-size: 0.85rem;
     }
 
-    select,
-    textarea,
-    input[type="text"],
-    input[type="file"] {
+    select, textarea, input[type="text"], input[type="file"] {
       width: 100%;
       padding: 0.55rem 0.6rem;
       margin: 0;
@@ -484,8 +493,8 @@
   </div>
   <div class="nav-right">
     <a href="#run-scan">Run a scan</a>
-    <a href="#info">How it works</a>
-    <a href="#info">Safety</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#safety">Safety</a>
   </div>
 </div>
 
@@ -532,10 +541,10 @@
 </section>
 
 <!-- Main content -->
-<div class="page-main" id="run-scan">
+<div class="page-main">
   <div class="card-grid">
     <!-- Scan card -->
-    <section class="card">
+    <section class="card" id="run-scan">
       <h2>Run a scan</h2>
       <p class="card-subtitle">Fill in a few details, upload a photo, and PawScan AI will return an easy-to-read summary.</p>
 
@@ -597,10 +606,12 @@
     </section>
 
     <!-- History / Info card -->
-    <aside class="card history-panel" id="info">
+    <aside class="card history-panel" id="how-it-works">
       <h3>Recent scans on this device</h3>
       <div id="history-entries"></div>
+
       <hr style="margin:1.2rem 0;border:none;border-top:1px solid #e5e7eb;"/>
+
       <h3>How to use PawScan AI safely</h3>
       <ul class="info-list">
         <li><strong>Educational only:</strong> This is not a vet and not a diagnosis.</li>
@@ -608,6 +619,15 @@
         <li><strong>When in doubt, call a vet:</strong> Especially for breathing issues, collapse, severe pain, or fast changes.</li>
         <li><strong>Privacy-aware:</strong> We don’t use your scans for advertising across other sites or apps.</li>
       </ul>
+
+      <div id="safety" style="margin-top:1.2rem;">
+        <h3>Safety & emergencies</h3>
+        <ul class="info-list">
+          <li><strong>Emergency signs:</strong> trouble breathing, collapse, severe bleeding, seizures, or extreme pain.</li>
+          <li><strong>Always:</strong> Contact a veterinarian or emergency clinic immediately if your pet seems in crisis.</li>
+          <li>This tool is best for mild-to-moderate concerns where you’re unsure how urgent it is.</li>
+        </ul>
+      </div>
     </aside>
   </div>
 </div>
