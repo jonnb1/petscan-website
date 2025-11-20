@@ -15,11 +15,11 @@
     }
 
     body.dark {
-      --primary: #0a5c75;
-      --secondary: #182430;
-      --highlight: #ff9f43;
-      --text-dark: #ecf0f1;
-      --background: #0e141b;
+      --primary: #0b3a4d;
+      --secondary: #1a1a1a;
+      --highlight: #ffb347;
+      --text-dark: #e4e4e4;
+      --background: #121212;
     }
 
     body {
@@ -44,20 +44,28 @@
       background-repeat: no-repeat;
     }
 
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0,0,0,0.4);
+      z-index: 0;
+    }
+
     header * {
+      position: relative;
+      z-index: 1;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
 
     .toggle-dark {
       position: absolute;
-      top: 20px;
-      right: 20px;
-      background: var(--highlight);
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
       color: white;
+      font-size: 1.5rem;
       border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 5px;
       cursor: pointer;
     }
 
@@ -201,22 +209,15 @@
       button {
         width: 100%;
       }
-
-      .toggle-dark {
-        top: 10px;
-        right: 10px;
-        padding: 0.4rem 0.8rem;
-      }
     }
   </style>
 </head>
 <body>
 
-<button class="toggle-dark" onclick="toggleDarkMode()">🌙 Dark Mode</button>
-
 <header>
   <h1>🐱🐶 PawScan AI</h1>
   <p>AI-powered triage for your pets — educational only, not a diagnosis.</p>
+  <button class="toggle-dark" onclick="toggleDarkMode()">🌙</button>
 </header>
 
 <main>
