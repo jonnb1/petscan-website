@@ -29,11 +29,6 @@
       text-align: center;
       padding: 2rem 1rem;
       border-bottom: 5px solid var(--highlight);
-      background-image: 
-        linear-gradient(rgba(10, 92, 117, 0.85), rgba(14, 116, 143, 0.85)),
-        url('/mnt/data/8E2D3092-7248-4DEC-8502-641E0070CD24.jpeg');
-      background-size: cover;
-      background-position: center;
     }
 
     header * {
@@ -65,16 +60,22 @@
       font-weight: 600;
     }
 
-    select, textarea, input[type="text"], input[type="file"] {
+    select,
+    textarea,
+    input[type="text"],
+    input[type="file"] {
       width: 100%;
       padding: 0.6rem;
       margin-top: 0.4rem;
       border: 1px solid #ccc;
       border-radius: 6px;
       transition: border-color 0.2s;
+      box-sizing: border-box;
     }
 
-    input:focus, select:focus, textarea:focus {
+    input:focus,
+    select:focus,
+    textarea:focus {
       border-color: var(--primary);
       outline: none;
     }
@@ -231,11 +232,28 @@
 <footer>&copy; 2025 PawScan AI. All rights reserved.</footer>
 
 <script>
-  const photoInput = document.getElementById('photo');
-  const preview = document.getElementById('preview');
-  const statusEl = document.getElementById('status');
-  const resultDiv = document.getElementById('result');
+  // --- crypto.randomUUID polyfill for older iOS Safari ---
+  (function () {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+      return;
+    }
+    function uuidv4() {
+      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      });
+    }
+    if (!window.crypto) window.crypto = {};
+    window.crypto.randomUUID = uuidv4;
+  })();
 
+  const photoInput   = document.getElementById('photo');
+  const preview      = document.getElementById('preview');
+  const statusEl     = document.getElementById('status');
+  const resultDiv    = document.getElementById('result');
+
+  // Image preview
   photoInput.addEventListener('change', () => {
     const file = photoInput.files[0];
     if (file && file.type.startsWith('image/')) {
@@ -292,16 +310,19 @@
     e.preventDefault();
 
     const scanType = document.getElementById('scan-type').value;
-    const notes = document.getElementById('notes').value.trim();
-    const petName = document.getElementById('pet-name').value.trim();
-    const file = photoInput.files[0];
+    const notes    = document.getElementById('notes').value.trim();
+    const petName  = document.getElementById('pet-name').value.trim();
+    const file     = photoInput.files[0];
 
     if (!file) {
       alert('Please upload a photo.');
       return;
     }
 
-    const concerns = Array.from(document.querySelectorAll('.concerns input:checked')).map(c => c.value);
+    const concerns = Array.from(
+      document.querySelectorAll('.concerns input:checked')
+    ).map(c => c.value);
+
     const combinedNotes = concerns.length
       ? 'Common concerns: ' + concerns.join(', ') + (notes ? '. Notes: ' + notes : '')
       : notes;
@@ -309,28 +330,39 @@
     const reader = new FileReader();
     reader.onload = async () => {
       const imageBase64 = reader.result.split(',')[1];
-      const userId = localStorage.getItem('pawscan_user_id') || crypto.randomUUID();
-      if (!localStorage.getItem('pawscan_user_id')) {
+
+      // Stable user id
+      let userId = localStorage.getItem('pawscan_user_id');
+      if (!userId) {
+        userId = crypto.randomUUID();
         localStorage.setItem('pawscan_user_id', userId);
       }
       const petId = crypto.randomUUID();
 
       statusEl.textContent = 'Analyzing...';
+      statusEl.style.color = '';
       resultDiv.style.display = 'none';
 
       try {
-        const resp = await fetch(`https://petscan-backend.onrender.com/webapi/v1/analyze/${scanType}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            user_id: userId,
-            pet_id: petId,
-            notes: combinedNotes,
-            image_base64: imageBase64,
-            image_url: '',
-            scan_type: scanType
-          })
-        });
+        const resp = await fetch(
+          `https://petscan-backend.onrender.com/webapi/v1/analyze/${scanType}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              user_id: userId,
+              pet_id: petId,
+              notes: combinedNotes,
+              image_base64: imageBase64,
+              image_url: '',
+              scan_type: scanType
+            })
+          }
+        );
+
+        if (!resp.ok) {
+          throw new Error('Server error: ' + resp.status);
+        }
 
         const data = await resp.json();
         showResult(data);
@@ -343,28 +375,35 @@
   });
 
   function showResult(data) {
-    const resultDiv = document.getElementById('result');
-    const statusEl = document.getElementById('status');
-    const petName = document.getElementById('pet-name').value.trim();
+    const petName  = document.getElementById('pet-name').value.trim();
     const scanType = document.getElementById('scan-type').value;
 
     const statusMap = {
-      normal: { label: 'Looks OK', color: 'green' },
-      needs_attention: { label: 'Needs Attention', color: 'red' },
-      monitor: { label: 'Monitor', color: 'orange' }
+      normal:         { label: 'Looks OK',        color: 'green'  },
+      needs_attention:{ label: 'Needs Attention', color: 'red'    },
+      monitor:        { label: 'Monitor',         color: 'orange' }
     };
 
     const status = statusMap[data.overall_status] || statusMap.monitor;
 
     resultDiv.innerHTML = `
-      <p><strong>Status for ${petName || 'your pet'}:</strong> <span style="color:${status.color};">${status.label}</span></p>
+      <p><strong>Status for ${petName || 'your pet'}:</strong>
+         <span style="color:${status.color};">${status.label}</span>
+      </p>
       <p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>
       <p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>
-      ${Array.isArray(data.possible_conditions) && data.possible_conditions.length
-        ? '<p><strong>Possible conditions:</strong><ul>' + data.possible_conditions.map(c => `<li>${c}</li>`).join('') + '</ul></p>'
-        : ''
+      ${
+        Array.isArray(data.possible_conditions) && data.possible_conditions.length
+          ? '<p><strong>Possible conditions:</strong><ul>' +
+            data.possible_conditions.map(c => `<li>${c}</li>`).join('') +
+            '</ul></p>'
+          : ''
       }
-      ${data.disclaimer ? `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>` : ''}
+      ${
+        data.disclaimer
+          ? `<p style="font-size:smaller;color:#555;">${data.disclaimer}</p>`
+          : ''
+      }
     `;
 
     resultDiv.style.display = 'block';
