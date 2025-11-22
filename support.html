@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PawScan AI Support</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #0a5c75;
+      --secondary: #f0f4f5;
+      --highlight: #ff9f43;
+      --text-dark: #2c3e50;
+      --background: #f9fafa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--background);
+      color: var(--text-dark);
+    }
+
+    /* Top nav */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.5rem;
+      background: #ffffff;
+      border-bottom: 1px solid #e3e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 20% 20%, #ffe8c7, #ff9f43);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .nav-title {
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-dark);
+      opacity: 0.75;
+    }
+
+    .nav-links a.active {
+      font-weight: 600;
+      color: var(--primary);
+      opacity: 1;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 2.5rem 1.5rem 1.5rem;
+      background: linear-gradient(135deg, var(--primary), #0e748f);
+      color: #fff;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 0.5rem;
+      font-size: 2rem;
+    }
+
+    .hero p {
+      margin: 0.25rem 0;
+      opacity: 0.95;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.15);
+      font-size: 0.8rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-badge span {
+      font-size: 0.9rem;
+    }
+
+    /* Layout */
+    .page {
+      max-width: 980px;
+      margin: -2rem auto 3rem;
+      padding: 0 1rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 840px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 22px rgba(15, 35, 52, 0.09);
+      padding: 1.5rem;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      font-size: 1.2rem;
+    }
+
+    .card p {
+      margin-top: 0.35rem;
+      margin-bottom: 0.35rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: var(--secondary);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+    }
+
+    .alert {
+      border-left: 4px solid #e74c3c;
+      background: #fdf1f0;
+      padding: 0.75rem 0.75rem 0.75rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .alert strong {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    /* FAQ */
+    .faq-item {
+      border-top: 1px solid #e3e7eb;
+      padding: 0.85rem 0;
+    }
+
+    .faq-item:first-of-type {
+      border-top: none;
+    }
+
+    .faq-question {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .faq-answer {
+      font-size: 0.9rem;
+      color: #4b5a69;
+    }
+
+    /* Support form */
+    form {
+      display: grid;
+      gap: 0.9rem;
+      margin-top: 0.75rem;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #d2d7de;
+      padding: 0.55rem 0.7rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: #fbfbfd;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(10, 92, 117, 0.15);
+      background: #ffffff;
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: #6e7a89;
+      margin-top: 0.15rem;
+    }
+
+    .btn-submit {
+      border: none;
+      border-radius: 999px;
+      padding: 0.7rem 1.4rem;
+      background: linear-gradient(135deg, var(--primary), #0e748f);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      justify-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 10px 22px rgba(15, 35, 52, 0.18);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .support-meta {
+      font-size: 0.78rem;
+      color: #7b8896;
+      margin-top: 0.25rem;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #7b8896;
+      padding: 1.5rem 1rem 2rem;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top navigation -->
+  <header class="nav">
+    <div class="nav-left">
+      <div class="nav-logo">🐾</div>
+      <div>
+        <div class="nav-title">PawScan AI</div>
+        <div style="font-size:0.78rem; color:#7b8896;">Pet Symptom Helper</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="https://pawscanai.com/">Home</a>
+      <a href="https://pawscanai.com/privacy">Privacy</a>
+      <a href="#" class="active">Support</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span>Support &amp; Help</span>
+    </div>
+    <h1>PawScan AI Support</h1>
+    <p>Need help with the app or have feedback? You’re in the right place.</p>
+    <p style="font-size:0.9rem; opacity:0.9;">
+      PawScan AI is an educational tool only and does not provide a diagnosis or replace a veterinarian.
+    </p>
+  </section>
+
+  <!-- Main content -->
+  <main class="page">
+    <div class="card-grid">
+      <!-- Left column: FAQ / info -->
+      <section class="card">
+        <span class="pill">Self-help &amp; common questions</span>
+        <h2>Before you contact support</h2>
+        <p>
+          Many questions can be answered quickly by reviewing the information below. If you still need help,
+          use the form on this page and we’ll review your feedback.
+        </p>
+
+        <div class="alert">
+          <strong>Emergencies</strong>
+          PawScan AI is not an emergency service. If your pet is having trouble breathing, is collapsed,
+          bleeding heavily, appears to be in severe pain, or your gut tells you something is very wrong,
+          contact a veterinarian or emergency clinic immediately. Do not wait for an AI opinion.
+        </div>
+
+        <div style="margin-top:1.25rem;">
+          <h2 style="margin-top:0;">Frequently asked questions</h2>
+
+          <div class="faq-item">
+            <div class="faq-question">Does PawScan AI replace a veterinarian?</div>
+            <div class="faq-answer">
+              No. PawScan AI is for education and triage-style guidance only. It summarizes what you’re seeing
+              and gives talking points for a vet visit. It does not provide a diagnosis or medical treatment.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">Why did the app say “Monitor” instead of “Needs attention”?</div>
+            <div class="faq-answer">
+              The AI looks at your photo and notes together. If it sees signs that are mild or unclear, it may
+              suggest monitoring rather than urgent action. If you are worried at any time, follow your instinct
+              and contact a veterinarian even if the app says “Monitor”.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">What data does the app send or store?</div>
+            <div class="faq-answer">
+              When you run a scan, a compressed copy of your pet’s photo and your notes are sent securely to
+              the PawScan backend so the AI can analyze them. A short summary of the scan is stored on your
+              device for your own history. See our privacy policy for full details.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">Does PawScan AI work offline?</div>
+            <div class="faq-answer">
+              No. The app needs an internet connection to send the photo to the backend and get an AI
+              interpretation. If your connection is weak or offline, scans may fail or take longer.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">The result doesn’t match what I see. What should I do?</div>
+            <div class="faq-answer">
+              You should always trust your own observations and your veterinarian over the app. If something
+              looks serious or changes quickly, contact a vet even if PawScan AI suggests monitoring.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right column: Contact form -->
+      <section class="card">
+        <span class="pill">Contact</span>
+        <h2>Send support or feedback</h2>
+        <p>
+          Use this form to report bugs, suggest improvements, or ask non-urgent questions about the app.
+          You do <strong>not</strong> need to enter an email address to submit feedback.
+        </p>
+
+        <!--
+          Replace the `action` URL with a real form endpoint, e.g. Formspree, Basin, etc.
+          Example (Formspree): https://formspree.io/f/your-form-id
+        -->
+        <form
+          id="support-form"
+          method="POST"
+          action="https://example.com/your-support-endpoint"
+        >
+          <div>
+            <label for="topic">What do you need help with?</label>
+            <select id="topic" name="topic" required>
+              <option value="">Select a topic…</option>
+              <option value="bug">Bug or something not working</option>
+              <option value="ai_result">Question about an AI result</option>
+              <option value="idea">Feature request / idea</option>
+              <option value="billing">Billing / App Store question</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="platform">Where are you using PawScan?</label>
+            <select id="platform" name="platform">
+              <option value="">Choose an option…</option>
+              <option value="iphone">iPhone</option>
+              <option value="ipad">iPad</option>
+              <option value="web">Web (pawscanai.com)</option>
+              <option value="other">Other / not sure</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="message">Describe the issue or feedback</label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Include what you were trying to do, what you expected to happen, and what you saw instead."
+              required
+            ></textarea>
+          </div>
+
+          <div>
+            <label for="contact_hint">
+              Optional contact (if you’d like a reply)
+            </label>
+            <input
+              type="text"
+              id="contact_hint"
+              name="contact_hint"
+              placeholder="Optional: email, Instagram handle, or other way to reach you"
+            />
+            <p class="hint">
+              You can leave this blank if you’re just sending anonymous feedback.
+            </p>
+          </div>
+
+          <!-- Hidden metadata filled by JavaScript -->
+          <input type="hidden" id="meta" name="meta" />
+
+          <button type="submit" class="btn-submit">
+            <span>Submit feedback</span>
+            <span aria-hidden="true">➤</span>
+          </button>
+
+          <p class="support-meta" id="form-status"></p>
+        </form>
+
+        <p class="hint" style="margin-top:1rem;">
+          By using this form, you agree that anonymized feedback may be used to improve PawScan AI over time.
+          Do not share passwords, payment details, or anything you’d consider sensitive.
+        </p>
+      </section>
+    </div>
+
+    <!-- Extra section for reviewers / details -->
+    <section class="card">
+      <span class="pill">For pet parents &amp; reviewers</span>
+      <h2>What PawScan AI is and isn’t</h2>
+      <p>
+        PawScan AI is designed to help pet parents think through what they see at home by summarizing a photo
+        and a short description into simple, triage-style guidance:
+        “Looks OK”, “Monitor”, or “Needs attention”.
+      </p>
+      <p>
+        It is not a diagnostic tool and does not prescribe treatment. All guidance is educational only and
+        should be used alongside, not instead of, advice from a licensed veterinarian.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> PawScan AI. All rights reserved.
+    &nbsp;&middot;&nbsp;
+    <a href="https://pawscanai.com/privacy">Privacy Policy</a>
+  </footer>
+
+  <script>
+    // Dynamic year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Fill hidden metadata field with basic device info
+    (function () {
+      var metaField = document.getElementById("meta");
+      if (!metaField) return;
+      var info = {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        screen: {
+          width: window.screen.width,
+          height: window.screen.height,
+          pixelRatio: window.devicePixelRatio || 1
+        },
+        url: window.location.href,
+        time: new Date().toISOString()
+      };
+      metaField.value = JSON.stringify(info);
+    })();
+
+    // Simple submit UX (works even if backend just shows thanks page)
+    const form = document.getElementById("support-form");
+    const statusEl = document.getElementById("form-status");
+
+    form.addEventListener("submit", function () {
+      const btn = form.querySelector(".btn-submit");
+      if (btn) {
+        btn.disabled = true;
+        btn.firstElementChild.textContent = "Sending…";
+      }
+      if (statusEl) {
+        statusEl.textContent =
+          "Sending your feedback… you can safely close this page after it redirects.";
+      }
+    });
+  </script>
+</body>
+</html>
