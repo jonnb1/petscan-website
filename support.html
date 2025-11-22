@@ -1,19 +1,20 @@
+<!-- support.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LJBZWF0ZXV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-LJBZWF0ZXV');
-</script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PawScan AI – Support & Feedback</title>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJBZWF0ZXV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LJBZWF0ZXV');
+  </script>
 
   <style>
     :root {
@@ -25,7 +26,6 @@
       --text-muted: #6b7280;
       --background: #f3f5f7;
       --danger: #e11d48;
-      --success: #059669;
     }
 
     * {
@@ -44,29 +44,24 @@
       text-decoration: none;
     }
 
-    /* Top nav */
-
     .nav {
-      max-width: 1100px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 0.9rem 1.5rem;
+      padding: 0.8rem 1.25rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(148,163,184,0.3);
     }
 
     .nav-left {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
 
     .logo-mark {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 10px;
       background: radial-gradient(circle at 30% 20%, #ffffff, #0a5c75 80%);
       display: flex;
@@ -79,118 +74,87 @@
     .logo-text {
       font-family: 'Raleway', sans-serif;
       font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: 0.02em;
+      font-size: 1.05rem;
     }
 
     .nav-right {
       display: flex;
-      gap: 1rem;
+      gap: 0.8rem;
       font-size: 0.9rem;
       color: var(--text-muted);
     }
 
     .nav-right a {
-      padding: 0.2rem 0.4rem;
+      padding: 0.15rem 0.4rem;
       border-radius: 999px;
     }
 
     .nav-right a:hover {
-      background: rgba(148,163,184,0.15);
+      background: rgba(255,255,255,0.7);
     }
 
-    /* Header */
-
     header {
-      max-width: 1100px;
-      margin: 1.2rem auto 0;
-      padding: 1.5rem 1.5rem 1rem;
+      background: linear-gradient(135deg, var(--primary), #0e748f);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem 1.6rem;
+      border-bottom: 4px solid var(--highlight);
     }
 
     header h1 {
       margin: 0 0 0.4rem;
+      font-size: 1.9rem;
       font-family: 'Raleway', sans-serif;
-      font-size: clamp(1.7rem, 2.4vw + 1.1rem, 2.2rem);
-      color: var(--primary-dark);
     }
 
     header p {
-      margin: 0.15rem 0;
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      max-width: 36rem;
+      margin: 0;
+      font-size: 0.98rem;
+      opacity: 0.9;
     }
 
-    .tagline-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      padding: 0.15rem 0.55rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.9);
-      border: 1px solid rgba(148,163,184,0.4);
-      font-size: 0.8rem;
-      color: var(--primary-dark);
-      margin-top: 0.5rem;
-    }
-
-    /* Main layout */
-
-    .page-main {
-      max-width: 1100px;
-      margin: 0 auto 3rem;
-      padding: 0 1.5rem;
-    }
-
-    .card-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-      gap: 1.75rem;
-    }
-
-    @media (max-width: 900px) {
-      .card-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .card {
-      background: #ffffff;
-      border-radius: 14px;
-      padding: 1.6rem 1.5rem;
-      box-shadow: 0 12px 30px rgba(15,23,42,0.12);
+    main {
+      max-width: 900px;
+      margin: 2rem auto 3rem;
+      padding: 1.7rem 1.5rem;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 0 18px rgba(15,23,42,0.12);
       border: 1px solid rgba(148,163,184,0.25);
     }
 
-    .card h2 {
-      margin: 0 0 0.4rem;
-      font-size: 1.25rem;
+    h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
     }
 
-    .card-subtitle {
-      font-size: 0.9rem;
+    p {
+      font-size: 0.95rem;
       color: var(--text-muted);
-      margin-bottom: 1.1rem;
+      line-height: 1.6;
     }
 
-    /* Form styling */
+    form {
+      margin-top: 1.2rem;
+    }
 
-    form .form-row {
+    .form-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 0.8rem;
     }
 
-    form .form-group {
+    .form-group {
       flex: 1 1 180px;
       min-width: 0;
+      margin-bottom: 0.9rem;
     }
 
     label {
       display: block;
-      margin-bottom: 0.25rem;
       font-weight: 600;
       font-size: 0.85rem;
+      margin-bottom: 0.25rem;
     }
 
     select, textarea, input[type="text"] {
@@ -199,35 +163,41 @@
       border-radius: 8px;
       border: 1px solid #cbd5e1;
       font-size: 0.9rem;
-      color: var(--text-dark);
       background-color: #f9fafb;
+      color: var(--text-dark);
     }
 
     textarea {
-      min-height: 120px;
+      min-height: 110px;
       resize: vertical;
     }
 
-    .helper {
+    .small-text {
       font-size: 0.8rem;
       color: var(--text-muted);
-      margin-top: 0.2rem;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin: 0.4rem 0 0.8rem;
+      font-size: 0.84rem;
     }
 
     .btn-primary {
-      margin-top: 1.2rem;
-      padding: 0.75rem 1.4rem;
-      background: linear-gradient(to right, var(--primary), #0e748f);
-      border: none;
-      border-radius: 999px;
-      color: white;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.35rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(to right, var(--primary), #0e748f);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
     }
 
     .btn-primary:disabled {
@@ -235,88 +205,62 @@
       cursor: default;
     }
 
-    .btn-primary span.icon {
-      font-size: 1rem;
-    }
-
-    #status {
+    .status {
       margin-top: 0.8rem;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       min-height: 1.1rem;
     }
 
-    /* Sidebar */
-
-    .sidebar-section h3 {
-      margin-top: 0;
-      margin-bottom: 0.4rem;
-      font-size: 1rem;
+    .status.ok {
+      color: #059669;
     }
 
-    .sidebar-section p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin: 0.25rem 0;
+    .status.error {
+      color: var(--danger);
     }
 
-    .sidebar-list {
-      list-style: none;
-      padding: 0;
-      margin: 0.3rem 0 0;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-    }
-
-    .sidebar-list li {
-      margin-bottom: 0.4rem;
+    .support-note {
+      margin-top: 1.4rem;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      background: var(--secondary);
+      border-left: 4px solid var(--primary);
+      font-size: 0.86rem;
     }
 
     footer {
       text-align: center;
-      padding: 1.8rem 1rem 2.2rem;
+      padding: 1.8rem 1rem 2rem;
       color: var(--text-muted);
       font-size: 0.8rem;
     }
 
     footer a {
       color: var(--primary);
+      text-decoration: none;
     }
 
     footer a:hover {
-      text-decoration: underline;
+      color: #074457;
     }
 
     @media (max-width: 600px) {
-      .nav {
-        padding-inline: 1rem;
-      }
-      header {
-        padding-inline: 1rem;
-      }
-      .page-main {
-        padding-inline: 1rem;
-      }
-      .card {
-        padding-inline: 1.1rem;
+      main {
+        margin-inline: 1rem;
+        padding-inline: 1.2rem;
       }
     }
   </style>
 </head>
 <body>
 
-<!-- Top nav -->
 <div class="nav">
   <div class="nav-left">
     <div class="logo-mark">🐾</div>
-    <div>
-      <a href="index.html" class="logo-text">PawScan AI</a>
-      <div style="font-size:0.75rem;color:var(--text-muted);">Pet triage assistant (educational only)</div>
-    </div>
+    <div class="logo-text">PawScan AI</div>
   </div>
   <div class="nav-right">
     <a href="index.html">Home</a>
-    <a href="index.html#how-it-works">How it works</a>
-    <a href="index.html#safety">Safety</a>
     <a href="support.html">Support</a>
     <a href="privacy.html">Privacy</a>
   </div>
@@ -324,131 +268,101 @@
 
 <header>
   <h1>Support & Feedback</h1>
-  <p>
-    Having trouble with the PawScan AI app or website? Found a bug or have an idea to improve it?
-    You can send feedback directly from here without providing an email address.
-  </p>
-  <div class="tagline-chip">
-    <span>🙌</span> <span>We read every submission, even if we can’t always reply.</span>
-  </div>
+  <p>Found a bug, have a question, or want to suggest a feature? Let us know.</p>
 </header>
 
-<main class="page-main">
-  <div class="card-grid">
-    <!-- Support form -->
-    <section class="card">
-      <h2>Send feedback</h2>
-      <p class="card-subtitle">
-        Tell us what happened, which platform you’re using, and any steps to reproduce the issue.
+<main>
+  <h2>Contact PawScan AI</h2>
+  <p>
+    This form sends your message securely to the PawScan backend. We don’t require you to enter an email address,
+    but if you’d like a reply, you can include contact info inside your message.
+  </p>
+
+  <form id="support-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="topic">Topic</label>
+        <select id="topic" required>
+          <option value="Bug">Bug or issue</option>
+          <option value="Feature request">Feature request</option>
+          <option value="Question">Question</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="platform">Where are you using PawScan?</label>
+        <select id="platform">
+          <option value="iOS app">iOS app</option>
+          <option value="Web">Web</option>
+          <option value="Both">Both</option>
+          <option value="Other / unsure">Other / unsure</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea id="message" placeholder="Describe what happened, what you expected, and anything we can do to improve."></textarea>
+      <p class="small-text">
+        If you’d like a response, you can include an email address in this message. We won’t share it.
       </p>
+    </div>
 
-      <form id="support-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="topic">Topic</label>
-            <select id="topic" required>
-              <option value="Bug">Bug / Something not working</option>
-              <option value="Feature request">Feature request</option>
-              <option value="Question">Question</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="allow-contact">
+      <label for="allow-contact">It’s OK to contact me if you need more details.</label>
+    </div>
 
-          <div class="form-group">
-            <label for="platform">Platform</label>
-            <select id="platform" required>
-              <option value="iOS app">iOS app</option>
-              <option value="Web">Web</option>
-              <option value="Both">Both</option>
-              <option value="Other">Other / not sure</option>
-            </select>
-          </div>
-        </div>
+    <button type="submit" class="btn-primary" id="support-submit-btn">
+      <span>Submit</span>
+    </button>
+    <div id="support-status" class="status"></div>
+  </form>
 
-        <div class="form-group" style="margin-top:0.7rem;">
-          <label for="app-version">App / OS version (optional)</label>
-          <input type="text" id="app-version" placeholder="E.g. iOS 18.2, PawScan 1.0" />
-          <div class="helper">
-            This helps reproduce issues, especially on specific iOS versions or devices.
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-top:0.7rem;">
-          <label for="message">What’s going on?</label>
-          <textarea id="message" required
-            placeholder="Describe what you were trying to do, what you expected, and what actually happened."></textarea>
-          <div class="helper">
-            Don’t include sensitive personal information. If you’d like a reply, you can optionally include contact info in your message.
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary">
-          <span class="icon">📨</span>
-          <span>Submit to PawScan</span>
-        </button>
-      </form>
-
-      <div id="status"></div>
-    </section>
-
-    <!-- Sidebar info -->
-    <aside class="card">
-      <div class="sidebar-section">
-        <h3>What happens when you submit</h3>
-        <ul class="sidebar-list">
-          <li>✅ Your message is sent securely to the PawScan backend.</li>
-          <li>✅ It’s logged so we can track issues and improve the app.</li>
-          <li>✅ A copy is forwarded to the developer for review.</li>
-        </ul>
-      </div>
-
-      <div class="sidebar-section" style="margin-top:1.2rem;">
-        <h3>We don’t require an email</h3>
-        <p>
-          By default, we don’t ask for your email address. If you’d like a reply, you can
-          include your preferred contact details inside the message text.
-        </p>
-      </div>
-
-      <div class="sidebar-section" style="margin-top:1.2rem;">
-        <h3>Emergency situations</h3>
-        <p>
-          PawScan AI is an educational tool only. If your pet is in distress, having trouble breathing,
-          collapsed, bleeding heavily, or seems very unwell, please contact a veterinarian or emergency clinic
-          immediately. Don’t wait for an app or email response.
-        </p>
-      </div>
-    </aside>
+  <div class="support-note">
+    <strong>Emergency?</strong> PawScan AI is for educational use only and is not a veterinary service. If your pet
+    seems to be in distress, contact a veterinarian or emergency clinic right away.
   </div>
 </main>
 
 <footer>
-  © 2025 PawScan AI. Educational-only tool, not a substitute for in-person veterinary care.
-  · <a href="index.html">Main site</a> · <a href="privacy.html">Privacy Policy</a>
+  © 2025 PawScan AI. All rights reserved.
+  · <a href="index.html">Home</a>
+  · <a href="privacy.html">Privacy</a>
 </footer>
 
 <script>
   const form = document.getElementById('support-form');
-  const statusEl = document.getElementById('status');
+  const statusEl = document.getElementById('support-status');
+  const submitBtn = document.getElementById('support-submit-btn');
 
-  form.addEventListener('submit', async function (e) {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const topic = document.getElementById('topic').value;
-    const message = document.getElementById('message').value.trim();
     const platform = document.getElementById('platform').value;
-    const appVersion = document.getElementById('app-version').value.trim();
-    const userAgent = navigator.userAgent || "unknown";
+    const message = document.getElementById('message').value.trim();
+    const allowContact = document.getElementById('allow-contact').checked;
 
     if (!message) {
-      alert("Please enter a brief description of your issue or feedback.");
+      statusEl.textContent = "Please enter a message.";
+      statusEl.className = "status error";
       return;
     }
 
-    statusEl.textContent = "Submitting...";
-    statusEl.style.color = "";
-    const submitButton = form.querySelector("button[type='submit']");
-    submitButton.disabled = true;
+    // GA event for support submission
+    if (window.gtag) {
+      window.gtag('event', 'support_submit', {
+        event_category: 'web',
+        event_label: topic,
+        topic: topic,
+        platform: platform
+      });
+    }
+
+    statusEl.textContent = "Sending...";
+    statusEl.className = "status";
+    submitBtn.disabled = true;
 
     try {
       const resp = await fetch("https://petscan-backend.onrender.com/support/submit", {
@@ -458,9 +372,9 @@
           topic: topic,
           message: message,
           platform: platform,
-          app_version: appVersion || null,
-          user_agent: userAgent,
-          allow_contact: false
+          app_version: null,
+          user_agent: navigator.userAgent,
+          allow_contact: allowContact
         })
       });
 
@@ -470,16 +384,19 @@
 
       const data = await resp.json();
       statusEl.textContent = data.message || "Thanks for your feedback!";
-      statusEl.style.color = "#059669"; // green
-      form.reset();
+      statusEl.className = "status ok";
+
+      // Optional: clear the form
+      document.getElementById('message').value = "";
+      document.getElementById('allow-contact').checked = false;
     } catch (err) {
-      statusEl.textContent = "Error submitting feedback: " + err.message;
-      statusEl.style.color = "#e11d48"; // red
+      statusEl.textContent = "There was a problem sending your message. Please try again later.";
+      statusEl.className = "status error";
+      console.error(err);
     } finally {
-      submitButton.disabled = false;
+      submitBtn.disabled = false;
     }
   });
 </script>
-
 </body>
 </html>
