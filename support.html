@@ -16,9 +16,7 @@
       --background: #f9fafa;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -27,7 +25,6 @@
       color: var(--text-dark);
     }
 
-    /* Top nav */
     .nav {
       display: flex;
       align-items: center;
@@ -80,11 +77,8 @@
       opacity: 1;
     }
 
-    .nav-links a:hover {
-      opacity: 1;
-    }
+    .nav-links a:hover { opacity: 1; }
 
-    /* Hero */
     .hero {
       padding: 2.5rem 1.5rem 1.5rem;
       background: linear-gradient(135deg, var(--primary), #0e748f);
@@ -113,11 +107,6 @@
       margin-bottom: 0.75rem;
     }
 
-    .hero-badge span {
-      font-size: 0.9rem;
-    }
-
-    /* Layout */
     .page {
       max-width: 980px;
       margin: -2rem auto 3rem;
@@ -132,9 +121,7 @@
     }
 
     @media (max-width: 840px) {
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
+      .card-grid { grid-template-columns: 1fr; }
     }
 
     .card {
@@ -184,15 +171,12 @@
       margin-bottom: 0.25rem;
     }
 
-    /* FAQ */
     .faq-item {
       border-top: 1px solid #e3e7eb;
       padding: 0.85rem 0;
     }
 
-    .faq-item:first-of-type {
-      border-top: none;
-    }
+    .faq-item:first-of-type { border-top: none; }
 
     .faq-question {
       font-weight: 600;
@@ -204,7 +188,6 @@
       color: #4b5a69;
     }
 
-    /* Support form */
     form {
       display: grid;
       gap: 0.9rem;
@@ -292,7 +275,6 @@
   </style>
 </head>
 <body>
-  <!-- Top navigation -->
   <header class="nav">
     <div class="nav-left">
       <div class="nav-logo">🐾</div>
@@ -308,11 +290,8 @@
     </nav>
   </header>
 
-  <!-- Hero -->
   <section class="hero">
-    <div class="hero-badge">
-      <span>Support &amp; Help</span>
-    </div>
+    <div class="hero-badge">Support &amp; Help</div>
     <h1>PawScan AI Support</h1>
     <p>Need help with the app or have feedback? You’re in the right place.</p>
     <p style="font-size:0.9rem; opacity:0.9;">
@@ -320,10 +299,8 @@
     </p>
   </section>
 
-  <!-- Main content -->
   <main class="page">
     <div class="card-grid">
-      <!-- Left column: FAQ / info -->
       <section class="card">
         <span class="pill">Self-help &amp; common questions</span>
         <h2>Before you contact support</h2>
@@ -375,18 +352,9 @@
               interpretation. If your connection is weak or offline, scans may fail or take longer.
             </div>
           </div>
-
-          <div class="faq-item">
-            <div class="faq-question">The result doesn’t match what I see. What should I do?</div>
-            <div class="faq-answer">
-              You should always trust your own observations and your veterinarian over the app. If something
-              looks serious or changes quickly, contact a vet even if PawScan AI suggests monitoring.
-            </div>
-          </div>
         </div>
       </section>
 
-      <!-- Right column: Contact form -->
       <section class="card">
         <span class="pill">Contact</span>
         <h2>Send support or feedback</h2>
@@ -395,15 +363,7 @@
           You do <strong>not</strong> need to enter an email address to submit feedback.
         </p>
 
-        <!--
-          Replace the `action` URL with a real form endpoint, e.g. Formspree, Basin, etc.
-          Example (Formspree): https://formspree.io/f/your-form-id
-        -->
-        <form
-          id="support-form"
-          method="POST"
-          action="https://example.com/your-support-endpoint"
-        >
+        <form id="support-form">
           <div>
             <label for="topic">What do you need help with?</label>
             <select id="topic" name="topic" required>
@@ -432,15 +392,13 @@
             <textarea
               id="message"
               name="message"
-              placeholder="Include what you were trying to do, what you expected to happen, and what you saw instead."
+              placeholder="Include what you were trying to do, what you expected, and what you saw instead."
               required
             ></textarea>
           </div>
 
           <div>
-            <label for="contact_hint">
-              Optional contact (if you’d like a reply)
-            </label>
+            <label for="contact_hint">Optional contact (if you’d like a reply)</label>
             <input
               type="text"
               id="contact_hint"
@@ -452,7 +410,6 @@
             </p>
           </div>
 
-          <!-- Hidden metadata filled by JavaScript -->
           <input type="hidden" id="meta" name="meta" />
 
           <button type="submit" class="btn-submit">
@@ -464,20 +421,17 @@
         </form>
 
         <p class="hint" style="margin-top:1rem;">
-          By using this form, you agree that anonymized feedback may be used to improve PawScan AI over time.
-          Do not share passwords, payment details, or anything you’d consider sensitive.
+          Do not share passwords, payment details, or anything highly sensitive in this form.
         </p>
       </section>
     </div>
 
-    <!-- Extra section for reviewers / details -->
     <section class="card">
       <span class="pill">For pet parents &amp; reviewers</span>
       <h2>What PawScan AI is and isn’t</h2>
       <p>
         PawScan AI is designed to help pet parents think through what they see at home by summarizing a photo
-        and a short description into simple, triage-style guidance:
-        “Looks OK”, “Monitor”, or “Needs attention”.
+        and a short description into simple, triage-style guidance: “Looks OK”, “Monitor”, or “Needs attention”.
       </p>
       <p>
         It is not a diagnostic tool and does not prescribe treatment. All guidance is educational only and
@@ -493,10 +447,10 @@
   </footer>
 
   <script>
-    // Dynamic year in footer
+    // Footer year
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Fill hidden metadata field with basic device info
+    // Build meta info
     (function () {
       var metaField = document.getElementById("meta");
       if (!metaField) return;
@@ -514,19 +468,52 @@
       metaField.value = JSON.stringify(info);
     })();
 
-    // Simple submit UX (works even if backend just shows thanks page)
     const form = document.getElementById("support-form");
     const statusEl = document.getElementById("form-status");
 
-    form.addEventListener("submit", function () {
-      const btn = form.querySelector(".btn-submit");
-      if (btn) {
-        btn.disabled = true;
-        btn.firstElementChild.textContent = "Sending…";
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const topic = document.getElementById("topic").value;
+      const platform = document.getElementById("platform").value;
+      const message = document.getElementById("message").value.trim();
+      const contact_hint = document.getElementById("contact_hint").value.trim();
+      const meta = document.getElementById("meta").value;
+
+      if (!topic || !message) {
+        statusEl.textContent = "Please choose a topic and describe the issue.";
+        return;
       }
-      if (statusEl) {
+
+      const btn = form.querySelector(".btn-submit");
+      btn.disabled = true;
+      btn.firstElementChild.textContent = "Sending…";
+      statusEl.textContent = "Sending your feedback…";
+
+      try {
+        const resp = await fetch("https://petscan-backend.onrender.com/support/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topic,
+            platform,
+            message,
+            contact_hint: contact_hint || null,
+            meta: meta ? JSON.parse(meta) : null
+          })
+        });
+
+        if (!resp.ok) throw new Error("Server error " + resp.status);
+
+        statusEl.textContent = "Thanks! Your feedback has been sent.";
+        form.reset();
+      } catch (err) {
+        console.error(err);
         statusEl.textContent =
-          "Sending your feedback… you can safely close this page after it redirects.";
+          "Sorry, something went wrong sending your feedback. Please try again later.";
+      } finally {
+        btn.disabled = false;
+        btn.firstElementChild.textContent = "Submit feedback";
       }
     });
   </script>
