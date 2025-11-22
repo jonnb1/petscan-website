@@ -1,21 +1,22 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LJBZWF0ZXV"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-LJBZWF0ZXV');
-</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PawScan AI – Pet Triage Assistant</title>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 
-  <!-- AdSense auto-ads -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJBZWF0ZXV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LJBZWF0ZXV');
+  </script>
+
+  <!-- AdSense auto-ads (only does anything once approved in AdSense UI) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7320834425782527" crossorigin="anonymous"></script>
 
   <style>
@@ -31,7 +32,9 @@
       --success: #059669;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -46,6 +49,7 @@
     }
 
     /* Top nav */
+
     .nav {
       max-width: 1100px;
       margin: 0 auto;
@@ -108,6 +112,7 @@
     }
 
     /* Hero */
+
     .hero-wrap {
       max-width: 1100px;
       margin: 0 auto;
@@ -234,6 +239,7 @@
     }
 
     /* Main content card */
+
     .page-main {
       max-width: 1100px;
       margin: 0 auto 3rem;
@@ -247,7 +253,9 @@
     }
 
     @media (max-width: 900px) {
-      .card-grid { grid-template-columns: minmax(0, 1fr); }
+      .card-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
     .card {
@@ -271,6 +279,7 @@
     }
 
     /* Form layout */
+
     .form-row {
       display: flex;
       flex-wrap: wrap;
@@ -325,7 +334,9 @@
       border: 1px solid rgba(148,163,184,0.3);
     }
 
-    .concerns input { accent-color: var(--primary); }
+    .concerns input {
+      accent-color: var(--primary);
+    }
 
     .note-msg {
       font-size: 0.78rem;
@@ -355,7 +366,9 @@
       cursor: default;
     }
 
-    .btn-primary span.icon { font-size: 1rem; }
+    .btn-primary span.icon {
+      font-size: 1rem;
+    }
 
     .image-preview {
       margin-top: 0.6rem;
@@ -372,6 +385,7 @@
     }
 
     /* Result / history */
+
     .result {
       margin-top: 1.2rem;
       padding: 1rem 1rem 0.9rem;
@@ -422,14 +436,20 @@
       font-size: 0.85rem;
     }
 
-    .history-entry strong { font-weight: 600; }
+    .history-entry strong {
+      font-weight: 600;
+    }
 
     .history-entry em {
       color: var(--text-muted);
       font-size: 0.78rem;
     }
 
-    .history-entry details { margin-top: 0.25rem; }
+    .history-entry details {
+      margin-top: 0.25rem;
+    }
+
+    /* Info card */
 
     .info-list {
       list-style: none;
@@ -450,11 +470,28 @@
       font-size: 0.8rem;
     }
 
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #074457;
+    }
+
     @media (max-width: 600px) {
-      .hero-wrap { padding-inline: 1rem; }
-      .page-main { padding-inline: 1rem; }
-      .card { padding: 1.3rem 1rem; }
-      .hero-side-card { display: none; }
+      .hero-wrap {
+        padding-inline: 1rem;
+      }
+      .page-main {
+        padding-inline: 1rem;
+      }
+      .card {
+        padding: 1.3rem 1rem;
+      }
+      .hero-side-card {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -476,8 +513,8 @@
     <a href="#run-scan">Run a scan</a>
     <a href="#how-it-works">How it works</a>
     <a href="#safety">Safety</a>
-    <!-- NEW: link to support page -->
     <a href="support.html">Support</a>
+    <a href="privacy.html">Privacy</a>
   </div>
 </div>
 
@@ -617,14 +654,16 @@
 
 <footer>
   © 2025 PawScan AI. Educational-only tool, not a substitute for in-person veterinary care.
+  · <a href="privacy.html">Privacy</a>
   · <a href="support.html">Support</a>
-  · <a href="privacy.html">Privacy Policy</a>
 </footer>
 
 <script>
-  // crypto.randomUUID polyfill
+  // --- crypto.randomUUID polyfill for older Safari / iOS ---
   (function () {
-    if (window.crypto && typeof window.crypto.randomUUID === "function") return;
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+      return;
+    }
     function uuidv4() {
       return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
         const r = (Math.random() * 16) | 0;
@@ -641,6 +680,7 @@
   const statusEl   = document.getElementById('status');
   const resultDiv  = document.getElementById('result');
 
+  // Image preview
   photoInput.addEventListener('change', () => {
     const file = photoInput.files[0];
     if (file && file.type.startsWith('image/')) {
@@ -722,10 +762,20 @@
       ? 'Common concerns: ' + concerns.join(', ') + (notes ? '. Notes: ' + notes : '')
       : notes;
 
+    // GA event for web scan
+    if (window.gtag) {
+      window.gtag('event', 'scan_submitted', {
+        event_category: 'web',
+        event_label: scanType,
+        scan_type: scanType
+      });
+    }
+
     const reader = new FileReader();
     reader.onload = async () => {
       const imageBase64 = reader.result.split(',')[1];
 
+      // Stable user id
       let userId = localStorage.getItem('pawscan_user_id');
       if (!userId) {
         userId = crypto.randomUUID();
@@ -755,7 +805,9 @@
           }
         );
 
-        if (!resp.ok) throw new Error('Server error: ' + resp.status);
+        if (!resp.ok) {
+          throw new Error('Server error: ' + resp.status);
+        }
 
         const data = await resp.json();
         showResult(data);
@@ -780,7 +832,9 @@
     const status = statusMap[data.overall_status] || statusMap.monitor;
 
     resultDiv.innerHTML = `
-      <p><span class="${status.pillClass}">Status: ${status.label}</span></p>
+      <p>
+        <span class="${status.pillClass}">Status: ${status.label}</span>
+      </p>
       <p><strong>For ${petName || 'your pet'} (${scanType}):</strong></p>
       <p><strong>Summary:</strong> ${data.summary_text || 'No summary provided.'}</p>
       <p><strong>Recommendation:</strong> ${data.recommendation_text || 'No recommendation provided.'}</p>
