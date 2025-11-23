@@ -1,11 +1,40 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PawScan AI – Pet Triage Assistant</title>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <title>PawScan AI – Free Pet Symptom Checker & Triage Assistant</title>
+
+  <!-- Primary SEO meta -->
+  <meta name="description" content="PawScan AI is an educational pet symptom checker for dogs and cats. Upload a photo, describe what you see, and get clear triage-style guidance to discuss with your vet." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://pawscanai.com/" />
+
+  <!-- Open Graph (social sharing) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="PawScan AI – Free Pet Symptom Checker & Triage Assistant" />
+  <meta property="og:description" content="Upload a photo of your dog or cat and get clear, AI-powered triage-style guidance you can use when talking to your vet." />
+  <meta property="og:url" content="https://pawscanai.com/" />
+  <!-- Optional promo image if/when you add it -->
+  <!-- <meta property="og:image" content="https://pawscanai.com/images/og-pawscan.png" /> -->
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PawScan AI – Free Pet Symptom Checker & Triage Assistant" />
+  <meta name="twitter:description" content="Upload a photo of your dog or cat and get clear, AI-powered triage-style guidance you can use when talking to your vet." />
+  <!-- <meta name="twitter:image" content="https://pawscanai.com/images/og-pawscan.png" /> -->
+
+  <!-- JSON-LD structured data: WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "PawScan AI",
+    "url": "https://pawscanai.com/",
+    "description": "Educational pet symptom checker that uses AI to summarize your notes and a photo into vet-friendly triage-style guidance. Not a diagnosis or replacement for a veterinarian.",
+    "inLanguage": "en"
+  }
+  </script>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJBZWF0ZXV"></script>
@@ -16,8 +45,11 @@
     gtag('config', 'G-LJBZWF0ZXV');
   </script>
 
-  <!-- AdSense auto-ads (only does anything once approved in AdSense UI) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7320834425782527" crossorigin="anonymous"></script>
+  <!-- AdSense auto-ads (works once approved in AdSense UI) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-7320834425782527" crossorigin="anonymous"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 
   <style>
     :root {
@@ -476,7 +508,7 @@
     }
 
     footer a:hover {
-      color: #074457;
+      text-decoration: underline;
     }
 
     @media (max-width: 600px) {
@@ -490,7 +522,7 @@
         padding: 1.3rem 1rem;
       }
       .hero-side-card {
-        display: none;
+        display: none; /* hide side card on very small screens for simplicity */
       }
     }
   </style>
@@ -513,8 +545,8 @@
     <a href="#run-scan">Run a scan</a>
     <a href="#how-it-works">How it works</a>
     <a href="#safety">Safety</a>
-    <a href="support.html">Support</a>
-    <a href="privacy.html">Privacy</a>
+    <a href="/support.html">Support</a>
+    <a href="/privacy.html">Privacy</a>
   </div>
 </div>
 
@@ -654,8 +686,8 @@
 
 <footer>
   © 2025 PawScan AI. Educational-only tool, not a substitute for in-person veterinary care.
-  · <a href="privacy.html">Privacy</a>
-  · <a href="support.html">Support</a>
+  · <a href="/support.html">Support</a>
+  · <a href="/privacy.html">Privacy Policy</a>
 </footer>
 
 <script>
@@ -762,15 +794,6 @@
       ? 'Common concerns: ' + concerns.join(', ') + (notes ? '. Notes: ' + notes : '')
       : notes;
 
-    // GA event for web scan
-    if (window.gtag) {
-      window.gtag('event', 'scan_submitted', {
-        event_category: 'web',
-        event_label: scanType,
-        scan_type: scanType
-      });
-    }
-
     const reader = new FileReader();
     reader.onload = async () => {
       const imageBase64 = reader.result.split(',')[1];
@@ -796,7 +819,7 @@
             body: JSON.stringify({
               user_id: userId,
               pet_id: petId,
-              species: "Unknown",
+              species: "Unknown",   // required by backend model
               notes: combinedNotes,
               image_base64: imageBase64,
               image_url: "",
@@ -858,5 +881,6 @@
     saveScanToHistory(data, petName, scanType);
   }
 </script>
+
 </body>
 </html>
