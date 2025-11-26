@@ -6,14 +6,14 @@
   <title>PawScan AI – Free Pet Symptom Checker & Triage Assistant</title>
 
   <!-- Primary SEO meta -->
-  <meta name="description" content="PawScan AI is an educational pet symptom checker for dogs and cats. Upload a photo, describe what you see, and get clear triage-style guidance to discuss with your vet." />
+  <meta name="description" content="PawScan AI is an educational pet symptom checker for dogs and cats. Upload a photo, describe what you see, and get clear triage-style guidance to discuss with your vet. Not a diagnosis or replacement for veterinary care." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://pawscanai.com/" />
 
   <!-- Open Graph (social sharing) -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="PawScan AI – Free Pet Symptom Checker & Triage Assistant" />
-  <meta property="og:description" content="Upload a photo of your dog or cat and get clear, AI-powered triage-style guidance you can use when talking to your vet." />
+  <meta property="og:description" content="Upload a photo of your dog or cat and get clear, AI-powered triage-style guidance you can use when talking to your vet. Educational only, not a diagnosis." />
   <meta property="og:url" content="https://pawscanai.com/" />
   <!-- Optional promo image if/when you add it -->
   <!-- <meta property="og:image" content="https://pawscanai.com/images/og-pawscan.png" /> -->
@@ -21,7 +21,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="PawScan AI – Free Pet Symptom Checker & Triage Assistant" />
-  <meta name="twitter:description" content="Upload a photo of your dog or cat and get clear, AI-powered triage-style guidance you can use when talking to your vet." />
+  <meta name="twitter:description" content="Upload a photo of your dog or cat and get clear, AI-powered triage-style guidance you can use when talking to your vet. Educational only, not a diagnosis." />
   <!-- <meta name="twitter:image" content="https://pawscanai.com/images/og-pawscan.png" /> -->
 
   <!-- JSON-LD structured data: WebSite -->
@@ -537,7 +537,7 @@
       <div class="logo-text">PawScan AI</div>
       <div class="chip">
         <span>Beta</span>
-        <span>Not a diagnosis</span>
+        <span>Educational only · Not a diagnosis</span>
       </div>
     </div>
   </div>
@@ -545,6 +545,7 @@
     <a href="#run-scan">Run a scan</a>
     <a href="#how-it-works">How it works</a>
     <a href="#safety">Safety</a>
+    <a href="#sources">Sources</a>
     <a href="/support.html">Support</a>
     <a href="/privacy.html">Privacy</a>
   </div>
@@ -558,6 +559,7 @@
     <p class="hero-subtitle">
       Upload a photo, tell us what you’re seeing, and get a clear, plain-language summary
       you can use to decide what to do next — or to explain things to your vet.
+      PawScan AI is educational only and never a diagnosis.
     </p>
     <ul class="hero-bullets">
       <li><span class="icon">✅</span><span>Looks for patterns in your notes and photo (e.g., skin, gait, breathing, stool).</span></li>
@@ -576,6 +578,7 @@
     <div class="hero-side-title">What PawScan AI does</div>
     <p style="margin:0 0 0.5rem; color:var(--text-muted);">
       Think of this like a triage assistant that helps you organize your thoughts before you talk to a real vet.
+      Guidance is designed to be consistent with general concepts found in reputable veterinary resources.
     </p>
     <div class="hero-side-row">
       <span class="hero-pill">✨ Summarizes your notes</span>
@@ -587,7 +590,7 @@
       <span class="hero-pill">⚠️ Flags “monitor vs. attention”</span>
     </div>
     <p style="margin-top:0.7rem;font-size:0.8rem;color:var(--text-muted);">
-      Always follow the advice of a licensed veterinarian over anything you see here. This is for education only.
+      Always follow the advice of a licensed veterinarian over anything you see here. This is for education only and does not replace an in-person exam.
     </p>
   </aside>
 </section>
@@ -641,7 +644,7 @@
         <div class="form-group" style="margin-top:0.7rem;">
           <label for="photo">Upload photo (required)</label>
           <input type="file" id="photo" accept="image/*" required>
-          <img id="preview" class="image-preview" />
+          <img id="preview" class="image-preview" alt="Selected pet preview" />
           <p class="note-msg">
             We send a compressed copy of this photo with your notes to the PawScan backend to generate your report.
           </p>
@@ -680,12 +683,62 @@
           <li>This tool is best for mild-to-moderate concerns where you’re unsure how urgent it is.</li>
         </ul>
       </div>
+
+      <div id="sources" style="margin-top:1.2rem;">
+        <h3>Medical sources &amp; references</h3>
+        <ul class="info-list">
+          <li>
+            <strong>American Veterinary Medical Association (AVMA):</strong>
+            General pet health and client education resources for dogs and cats.
+            <br>
+            <a href="https://www.avma.org/resources/pet-owners" target="_blank" rel="noopener">
+              Visit AVMA pet owner resources ↗
+            </a>
+          </li>
+          <li>
+            <strong>Merck Veterinary Manual – Canine &amp; Feline:</strong>
+            Clinical information on common conditions, including dermatology, gastrointestinal disease, and respiratory problems.
+            <br>
+            <a href="https://www.merckvetmanual.com/special-subjects/pet-health-overview" target="_blank" rel="noopener">
+              Visit Merck Veterinary Manual ↗
+            </a>
+          </li>
+          <li>
+            <strong>Cornell Feline Health Center:</strong>
+            Owner-friendly articles on cat health, behavior, and preventive care.
+            <br>
+            <a href="https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information" target="_blank" rel="noopener">
+              Visit Cornell Feline Health Center ↗
+            </a>
+          </li>
+          <li>
+            <strong>Colorado State University Veterinary Teaching Hospital:</strong>
+            Guidance on recognizing emergencies and when to seek urgent care.
+            <br>
+            <a href="https://vetmedbiosci.colostate.edu/vth/pet-emergency-care/" target="_blank" rel="noopener">
+              Visit CSU pet emergency care ↗
+            </a>
+          </li>
+          <li>
+            <strong>Royal Veterinary College – Advice for pet owners:</strong>
+            Educational resources on common medical problems and general care.
+            <br>
+            <a href="https://www.rvc.ac.uk/small-animal-vet/advice" target="_blank" rel="noopener">
+              Visit RVC advice for pet owners ↗
+            </a>
+          </li>
+        </ul>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:0.4rem;">
+          PawScan AI is not affiliated with these organizations. Links are provided so you can read the underlying veterinary material directly.
+        </p>
+      </div>
     </aside>
   </div>
 </div>
 
 <footer>
   © 2025 PawScan AI. Educational-only tool, not a substitute for in-person veterinary care.
+  · <a href="#sources">Medical sources &amp; references</a>
   · <a href="/support.html">Support</a>
   · <a href="/privacy.html">Privacy Policy</a>
 </footer>
