@@ -9,6 +9,44 @@
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://pawscanai.com/support.html" />
 
+  <!-- JSON-LD structured data: WebPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "PawScan AI Support & Feedback",
+    "url": "https://pawscanai.com/support.html",
+    "description": "Submit feedback, report bugs, or request features for PawScan AI.",
+    "inLanguage": "en"
+  }
+  </script>
+
+  <!-- JSON-LD structured data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I submit feedback anonymously?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You don’t need to enter an email address — feedback can be anonymous."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if I want the team to contact me?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Check the box and include your preferred contact info in the message."
+        }
+      }
+    ]
+  }
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJBZWF0ZXV"></script>
   <script>
@@ -18,6 +56,9 @@
     gtag('config', 'G-LJBZWF0ZXV');
   </script>
 
+  <!-- Security Headers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://petscan-backend.onrender.com;">
+
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 
   <style>
@@ -25,14 +66,15 @@
       --primary: #0a5c75;
       --primary-dark: #064055;
       --secondary: #f0f4f5;
+      --highlight: #ff9f43;
       --text-dark: #1f2933;
-      --text-muted: #6b7280;
+      --text-muted: #4b5563; /* Improved contrast */
       --background: #f3f5f7;
       --danger: #e11d48;
       --success: #059669;
     }
 
-   {
+    * {
       box-sizing: border-box;
     }
 
@@ -41,6 +83,7 @@
       margin: 0;
       background: radial-gradient(circle at top, #e0f3f8, #f3f5f7 55%);
       color: var(--text-dark);
+      line-height: 1.5;
     }
 
     a {
@@ -49,7 +92,7 @@
     }
 
     .nav {
-      max-width: 900px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0.9rem 1.5rem;
       display: flex;
@@ -185,6 +228,15 @@
       align-items: center;
       justify-content: center;
       gap: 0.35rem;
+      transition: transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:focus {
+      outline: 2px solid var(--highlight);
     }
 
     .btn-primary:disabled {
@@ -222,6 +274,23 @@
       text-decoration: underline;
     }
 
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-dark: #f3f4f6;
+        --text-muted: #9ca3af;
+        --background: #1f2937;
+        --secondary: #374151;
+      }
+      body {
+        background: radial-gradient(circle at top, #334155, #1f2937 55%);
+        color: var(--text-dark);
+      }
+      .card {
+        background: #2d3748;
+      }
+    }
+
     @media (max-width: 600px) {
       .page-main {
         padding: 0 1.2rem 2rem;
@@ -229,14 +298,33 @@
       .card {
         padding: 1.4rem 1.2rem;
       }
+      .nav-right {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
+    /* Spinner */
+    .spinner {
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
 
+<!-- Analytics Consent Banner -->
+<div id="consent-banner" style="position:fixed;bottom:0;left:0;right:0;background:#fff;padding:1rem;text-align:center;border-top:1px solid #ddd;z-index:1000;display:none;">
+  <p>We use cookies for analytics. <button onclick="acceptCookies()">Accept</button> <button onclick="declineCookies()">Decline</button></p>
+</div>
+
 <div class="nav">
   <div class="nav-left">
-    <div class="logo-mark">🐾</div>
+    <div class="logo-mark" aria-label="PawScan AI Logo">🐾</div>
     <div class="logo-text">PawScan AI</div>
   </div>
   <div class="nav-right">
@@ -279,9 +367,13 @@
 
       <div class="checkbox-row">
         <input type="checkbox" id="allow-contact" />
-        <span>
+        <label for="allow-contact">
           It’s okay if the team contacts me if needed (include preferred contact info in your message).
-        </span>
+        </label>
+      </div>
+
+      <div class="small-help" style="margin-top:1rem;">
+        If the app is crashing or freezing, including your device model and iOS version can help.
       </div>
 
       <button type="submit" class="btn-primary">
@@ -290,10 +382,6 @@
 
       <div id="status" class="status-message"></div>
     </form>
-
-    <p class="small-help" style="margin-top:1.4rem;">
-      If the app is crashing or freezing, including your device model and iOS version can help.
-    </p>
   </div>
 </main>
 
@@ -304,6 +392,24 @@
 </footer>
 
 <script>
+  // Analytics Consent
+  function acceptCookies() {
+    localStorage.setItem('analyticsConsent', 'true');
+    document.getElementById('consent-banner').style.display = 'none';
+  }
+
+  function declineCookies() {
+    localStorage.setItem('analyticsConsent', 'false');
+    document.getElementById('consent-banner').style.display = 'none';
+    window['ga-disable-G-LJBZWF0ZXV'] = true;
+  }
+
+  if (!localStorage.getItem('analyticsConsent')) {
+    document.getElementById('consent-banner').style.display = 'block';
+  } else if (localStorage.getItem('analyticsConsent') === 'false') {
+    window['ga-disable-G-LJBZWF0ZXV'] = true;
+  }
+
   const form = document.getElementById('support-form');
   const statusEl = document.getElementById('status');
 
@@ -334,7 +440,7 @@
       allow_contact: allowContact
     };
 
-    statusEl.textContent = 'Sending...';
+    statusEl.innerHTML = 'Sending... <span class="spinner">⏳</span>';
     statusEl.className = 'status-message';
 
     try {
