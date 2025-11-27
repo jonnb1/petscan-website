@@ -9,6 +9,18 @@
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://pawscanai.com/privacy.html" />
 
+  <!-- JSON-LD structured data: WebPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "PawScan AI Privacy Policy",
+    "url": "https://pawscanai.com/privacy.html",
+    "description": "Privacy policy for PawScan AI, detailing data collection and usage.",
+    "inLanguage": "en"
+  }
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJBZWF0ZXV"></script>
   <script>
@@ -18,56 +30,84 @@
     gtag('config', 'G-LJBZWF0ZXV');
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter&display=swap" rel="stylesheet"/>
+  <!-- Security Headers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline';">
+
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+
   <style>
     :root {
       --primary: #0a5c75;
+      --primary-dark: #064055;
       --secondary: #f0f4f5;
       --highlight: #ff9f43;
-      --text-dark: #2c3e50;
-      --background: #f9fafa;
+      --text-dark: #1f2933;
+      --text-muted: #4b5563;
+      --background: #f3f5f7;
+      --danger: #e11d48;
+      --success: #059669;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
-      background-color: var(--background);
+      background: radial-gradient(circle at top, #e0f3f8, #f3f5f7 55%);
       color: var(--text-dark);
+      line-height: 1.5;
     }
 
     nav {
-      background-color: #ffffff;
-      border-bottom: 1px solid #e5e5e5;
-    }
-
-    nav .nav-inner {
-      max-width: 900px;
+      max-width: 1100px;
       margin: 0 auto;
+      padding: 0.9rem 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.5rem 1rem;
     }
 
-    nav .brand {
-      font-weight: 700;
-      color: var(--primary);
-      font-size: 1rem;
-      text-decoration: none;
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 30% 20%, #ffffff, #0a5c75 80%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .logo-text {
       font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
     }
 
-    nav .links a {
-      margin-left: 1rem;
-      text-decoration: none;
+    .nav-right {
+      display: flex;
+      gap: 1rem;
       font-size: 0.9rem;
-      color: var(--text-dark);
-      opacity: 0.8;
+      color: var(--text-muted);
     }
 
-    nav .links a:hover {
-      opacity: 1;
-      color: var(--primary);
+    .nav-right a {
+      padding: 0.2rem 0.3rem;
+      border-radius: 999px;
+    }
+
+    .nav-right a:hover {
+      background: rgba(255,255,255,0.6);
     }
 
     header {
@@ -141,7 +181,7 @@
       margin-top: 2rem;
       padding: 1.5rem 0 2rem;
       font-size: 0.85rem;
-      color: #777;
+      color: var(--text-muted);
     }
 
     footer a {
@@ -161,20 +201,52 @@
       color: #074457;
     }
 
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-dark: #f3f4f6;
+        --text-muted: #9ca3af;
+        --background: #1f2937;
+        --secondary: #374151;
+      }
+      body {
+        background: radial-gradient(circle at top, #334155, #1f2937 55%);
+        color: var(--text-dark);
+      }
+      main {
+        background: #2d3748;
+      }
+      .note {
+        background: #4a5568;
+      }
+    }
+
     @media (max-width: 600px) {
       main {
         margin: 1.2rem;
         padding: 1.2rem;
+      }
+      .nav-right {
+        flex-direction: column;
+        gap: 0.5rem;
       }
     }
   </style>
 </head>
 <body>
 
+<!-- Analytics Consent Banner -->
+<div id="consent-banner" style="position:fixed;bottom:0;left:0;right:0;background:#fff;padding:1rem;text-align:center;border-top:1px solid #ddd;z-index:1000;display:none;">
+  <p>We use cookies for analytics. <button onclick="acceptCookies()">Accept</button> <button onclick="declineCookies()">Decline</button></p>
+</div>
+
 <nav>
-  <div class="nav-inner">
-    <a href="/" class="brand">PawScan AI</a>
-    <div class="links">
+  <div class="nav">
+    <div class="nav-left">
+      <div class="logo-mark" aria-label="PawScan AI Logo">🐾</div>
+      <div class="logo-text">PawScan AI</div>
+    </div>
+    <div class="nav-right">
       <a href="/">Home</a>
       <a href="/support.html">Support</a>
       <a href="/privacy.html">Privacy</a>
@@ -184,7 +256,7 @@
 
 <header>
   <h1>Privacy Policy</h1>
-  <p>Last updated: February 2025</p>
+  <p>Last updated: November 2025</p>
 </header>
 
 <main>
@@ -311,10 +383,30 @@
 </main>
 
 <footer>
-  &copy; 2025 PawScan AI. All rights reserved.
+  © 2025 PawScan AI. Educational-only tool, not a substitute for veterinary care.
   · <a href="/">Home</a>
   · <a href="/support.html">Support</a>
 </footer>
+
+<script>
+  // Analytics Consent
+  function acceptCookies() {
+    localStorage.setItem('analyticsConsent', 'true');
+    document.getElementById('consent-banner').style.display = 'none';
+  }
+
+  function declineCookies() {
+    localStorage.setItem('analyticsConsent', 'false');
+    document.getElementById('consent-banner').style.display = 'none';
+    window['ga-disable-G-LJBZWF0ZXV'] = true;
+  }
+
+  if (!localStorage.getItem('analyticsConsent')) {
+    document.getElementById('consent-banner').style.display = 'block';
+  } else if (localStorage.getItem('analyticsConsent') === 'false') {
+    window['ga-disable-G-LJBZWF0ZXV'] = true;
+  }
+</script>
 
 </body>
 </html>
