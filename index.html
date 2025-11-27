@@ -36,6 +36,40 @@
   }
   </script>
 
+  <!-- JSON-LD structured data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is PawScan AI a replacement for a vet?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, it's educational only and not a diagnosis. Always consult a licensed veterinarian."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What types of pet symptoms can PawScan AI check?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It can triage issues like skin/coat, gait, breathing, hydration, stool, eyes, and ears for dogs and cats."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does PawScan AI handle privacy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We don’t use your scans for advertising across other sites or apps. Photos are compressed and sent only for analysis."
+        }
+      }
+    ]
+  }
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJBZWF0ZXV"></script>
   <script>
@@ -48,6 +82,9 @@
   <!-- AdSense auto-ads (works once approved in AdSense UI) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-7320834425782527" crossorigin="anonymous"></script>
 
+  <!-- Security Headers (meta equivalent for CSP; full headers in .htaccess or GitHub Pages config if possible) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://pagead2.googlesyndication.com; img-src 'self' data:; style-src 'self' 'unsafe-inline'; connect-src 'self' https://petscan-backend.onrender.com;">
+
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 
@@ -58,7 +95,7 @@
       --secondary: #f0f4f5;
       --highlight: #ff9f43;
       --text-dark: #1f2933;
-      --text-muted: #6b7280;
+      --text-muted: #4b5563; /* Improved contrast */
       --background: #f3f5f7;
       --danger: #e11d48;
       --success: #059669;
@@ -73,6 +110,7 @@
       margin: 0;
       background: radial-gradient(circle at top, #e0f3f8, #f3f5f7 55%);
       color: var(--text-dark);
+      line-height: 1.5; /* Improved typography */
     }
 
     a {
@@ -224,6 +262,15 @@
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
+      transition: transform 0.2s; /* Hover effect */
+    }
+
+    .hero-cta-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-cta-btn:focus {
+      outline: 2px solid var(--highlight);
     }
 
     .hero-cta-btn span.icon {
@@ -391,6 +438,15 @@
       justify-content: center;
       gap: 0.35rem;
       width: 100%;
+      transition: transform 0.2s; /* Hover effect */
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:focus {
+      outline: 2px solid var(--highlight);
     }
 
     .btn-primary:disabled {
@@ -511,6 +567,30 @@
       text-decoration: underline;
     }
 
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-dark: #f3f4f6;
+        --text-muted: #9ca3af;
+        --background: #1f2937;
+        --secondary: #374151;
+      }
+      body {
+        background: radial-gradient(circle at top, #334155, #1f2937 55%);
+        color: var(--text-dark);
+      }
+      .card {
+        background: #2d3748;
+      }
+      .result {
+        background: #4a5568;
+      }
+      .history-entry {
+        background: #2d3748;
+      }
+    }
+
+    /* Mobile nav stack */
     @media (max-width: 600px) {
       .hero-wrap {
         padding-inline: 1rem;
@@ -524,15 +604,37 @@
       .hero-side-card {
         display: none; /* hide side card on very small screens for simplicity */
       }
+      .nav-right {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .btn-primary {
+        min-width: 100%;
+      }
+    }
+
+    /* Spinner for loading */
+    .spinner {
+      animation: spin 1s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
 
+<!-- Analytics Consent Banner (GDPR-friendly) -->
+<div id="consent-banner" style="position:fixed;bottom:0;left:0;right:0;background:#fff;padding:1rem;text-align:center;border-top:1px solid #ddd;z-index:1000;display:none;">
+  <p>We use cookies for analytics. <button onclick="acceptCookies()">Accept</button> <button onclick="declineCookies()">Decline</button></p>
+</div>
+
 <!-- Top nav -->
 <div class="nav">
   <div class="nav-left">
-    <div class="logo-mark">🐾</div>
+    <div class="logo-mark" aria-label="PawScan AI Logo">🐾</div>
     <div>
       <div class="logo-text">PawScan AI</div>
       <div class="chip">
@@ -603,6 +705,12 @@
       <h2>Run a scan</h2>
       <p class="card-subtitle">Fill in a few details, upload a photo, and PawScan AI will return an easy-to-read summary.</p>
 
+      <!-- Onboarding Tooltip -->
+      <div id="onboarding-tooltip" style="background:#ecfeff;padding:0.5rem;border-radius:8px;margin-bottom:1rem;font-size:0.85rem;color:#0e7490;">
+        <strong>Tip:</strong> For best results, take a clear, close-up photo of the issue (e.g., skin rash or stool). Describe symptoms in detail.
+        <button onclick="this.parentElement.style.display='none';localStorage.setItem('tooltipSeen', 'true');" style="float:right;background:none;border:none;cursor:pointer;">✕</button>
+      </div>
+
       <form id="scan-form">
         <div class="form-row">
           <div class="form-group">
@@ -617,13 +725,16 @@
               <option value="breathing">Breathing</option>
               <option value="hydration">Hydration</option>
               <option value="poop">Stool / Poop</option>
+              <option value="eyes">Eyes</option>
+              <option value="ears">Ears</option>
             </select>
           </div>
         </div>
 
         <div class="form-group" style="margin-top:0.5rem;">
           <label>Common concerns</label>
-          <div class="concerns">
+          <fieldset class="concerns">
+            <legend class="sr-only">Common concerns</legend> <!-- For accessibility -->
             <label><input type="checkbox" value="Limping / trouble walking"> Limping</label>
             <label><input type="checkbox" value="Not eating / reduced appetite"> Not eating</label>
             <label><input type="checkbox" value="Vomiting"> Vomiting</label>
@@ -633,7 +744,7 @@
             <label><input type="checkbox" value="Breathing seems harder"> Breathing issues</label>
             <label><input type="checkbox" value="Skin redness / itching"> Skin issues</label>
             <label><input type="checkbox" value="Eye discharge / redness"> Eye redness</label>
-          </div>
+          </fieldset>
         </div>
 
         <div class="form-group" style="margin-top:0.7rem;">
@@ -644,9 +755,9 @@
         <div class="form-group" style="margin-top:0.7rem;">
           <label for="photo">Upload photo (required)</label>
           <input type="file" id="photo" accept="image/*" required>
-          <img id="preview" class="image-preview" alt="Selected pet preview" />
+          <img id="preview" class="image-preview" alt="Preview of uploaded pet photo" loading="lazy" />
           <p class="note-msg">
-            We send a compressed copy of this photo with your notes to the PawScan backend to generate your report.
+            We send a compressed copy of this photo with your notes to the PawScan backend to generate your report. Recommend files under 2MB for faster processing.
           </p>
         </div>
 
@@ -760,6 +871,31 @@
     window.crypto.randomUUID = uuidv4;
   })();
 
+  // Analytics Consent
+  function acceptCookies() {
+    localStorage.setItem('analyticsConsent', 'true');
+    document.getElementById('consent-banner').style.display = 'none';
+    // Load GA/AdSense scripts if not already
+  }
+
+  function declineCookies() {
+    localStorage.setItem('analyticsConsent', 'false');
+    document.getElementById('consent-banner').style.display = 'none';
+    // Optionally disable tracking
+    window['ga-disable-G-LJBZWF0ZXV'] = true;
+  }
+
+  if (!localStorage.getItem('analyticsConsent')) {
+    document.getElementById('consent-banner').style.display = 'block';
+  } else if (localStorage.getItem('analyticsConsent') === 'false') {
+    window['ga-disable-G-LJBZWF0ZXV'] = true;
+  }
+
+  // Onboarding Tooltip
+  if (!localStorage.getItem('tooltipSeen')) {
+    document.getElementById('onboarding-tooltip').style.display = 'block';
+  }
+
   const photoInput = document.getElementById('photo');
   const preview    = document.getElementById('preview');
   const statusEl   = document.getElementById('status');
@@ -835,7 +971,7 @@
     const file     = photoInput.files[0];
 
     if (!file) {
-      alert('Please upload a photo.');
+      statusEl.innerHTML = '<span style="color:#e11d48;">Please upload a photo.</span>';
       return;
     }
 
@@ -846,6 +982,11 @@
     const combinedNotes = concerns.length
       ? 'Common concerns: ' + concerns.join(', ') + (notes ? '. Notes: ' + notes : '')
       : notes;
+
+    if (!combinedNotes) {
+      statusEl.innerHTML = '<span style="color:#e11d48;">Please add notes or select at least one concern.</span>';
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = async () => {
@@ -859,7 +1000,7 @@
       }
       const petId = crypto.randomUUID();
 
-      statusEl.textContent = 'Analyzing...';
+      statusEl.innerHTML = 'Analyzing... <span class="spinner">⏳</span>';
       statusEl.style.color = '';
       resultDiv.style.display = 'none';
 
@@ -888,7 +1029,7 @@
         const data = await resp.json();
         showResult(data);
       } catch (err) {
-        statusEl.innerHTML = '<span style="color:#e11d48;">Error: ' + err.message + '</span>';
+        statusEl.innerHTML = '<span style="color:#e11d48;">Error: ' + err.message + '. Please try again or check your connection.</span>';
       }
     };
 
@@ -928,10 +1069,33 @@
       }
     `;
 
+    // Add Copy Button
+    const copyBtn = document.createElement('button');
+    copyBtn.textContent = 'Copy Summary to Share with Vet';
+    copyBtn.style.marginTop = '1rem';
+    copyBtn.style.padding = '0.5rem 1rem';
+    copyBtn.style.background = '#e5e7eb';
+    copyBtn.style.border = 'none';
+    copyBtn.style.borderRadius = '8px';
+    copyBtn.style.cursor = 'pointer';
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(resultDiv.textContent);
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => copyBtn.textContent = 'Copy Summary to Share with Vet', 2000);
+    };
+    resultDiv.appendChild(copyBtn);
+
     resultDiv.style.display = 'block';
     statusEl.textContent = '';
 
     saveScanToHistory(data, petName, scanType);
+  }
+
+  // Service Worker for Offline (basic caching)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('Service Worker registered', reg))
+      .catch(err => console.error('Service Worker registration failed', err));
   }
 </script>
 
